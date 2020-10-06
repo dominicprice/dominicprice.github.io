@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<title>Blackboard</title>
+	
+		<link rel="icon" href="logo.png">
+		<link rel="apple-touch-icon" href="logo.png">
+		<link rel="stylesheet" href="blackboard.css">
+	</head>
+	<body>
+	<div id="button-bar">
+		<button id="undo">Undo</button>
+		<button id="clear">Clear</button>
+		<button class="thickness" data-thickness="2">Thin</button>
+		<button class="thickness" data-thickness="4">Medium</button>
+		<button class="thickness" data-thickness="8">Thick</button>
+		<button class="colour" style="background-color:black"></button>
+		<button class="colour" style="background-color:white"></button>
+		<button class="colour" style="background-color:red"></button>
+		<button class="colour" style="background-color:green"></button>
+		<button class="colour" style="background-color:blue"></button>
+		<button class="colour" style="background-color:rgba(0, 0, 0, 0)">Erase</button>
+	</div>
+	<canvas id="blackboard-canvas"></canvas>
+	<script src="blackboard.js"></script>
+	</body>
+</html>

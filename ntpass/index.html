@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>7NTPass</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+
+	<!-- Javascript -->
+	<script src="js/jquery.js" defer></script>
+	<script src="js/page.js" defer></script>
+	<script src="js/main.js" defer></script>
+
+	<!-- Fonts/CSS -->
+	<link href="fonts/baloo-paaji-2.css" rel="stylesheet">
+	<link href="css/bid.css" rel="stylesheet">
+	<link href="css/page.css" rel="stylesheet">
+	<link href="css/modal.css" rel="stylesheet">
+	<link href="css/system.css" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Menu Bar -->
+	<nav>
+		<div class="menuitem" id="menu-new">New</div>
+		<div class="menuitem" id="menu-open">Open</div>
+		<div class="menuitem" id="menu-save">Save</div>
+		<div class="menuitem" id="menu-report-bug">Report Bug</div>"
+		<div class="menuitem" id="menu-help">Help</div>
+		<div id="logo" class="menuitem"></div>
+	</nav>
+
+	<!-- File chooser element -->
+	<input style="display: none" type="file" id="menu-open-widget">
+
+	<main>
+		<div class="content">
+			<!-- System metainfo -->
+			<div id="header-cell">
+				<input class="header-field" type="text" id="header-name" placeholder="System Name" disabled>
+				<input class="header-field" type="text" id="header-partnera" placeholder="Player A" disabled>
+				<input class="header-field" type="text" id="header-partnerb" placeholder="Player B" disabled>
+				<textarea class="header-field" rows="2" id="header-overview" placeholder="Brief System Description" disabled></textarea>
+			</div>
+
+			<!-- Bidding Box -->
+			<div id="bidding-box-cell">
+				<div id="bidding-box">
+					<button class="bid bid-clubs bid-level1" data-denom="clubs" data-level="1" disabled></button>
+					<button class="bid bid-diams bid-level1" data-denom="diams" data-level="1" disabled></button>
+					<button class="bid bid-hearts bid-level1" data-denom="hearts" data-level="1" disabled></button>
+					<button class="bid bid-spades bid-level1" data-denom="spades" data-level="1" disabled></button>
+					<button class="bid bid-nt bid-level1" data-denom="nt" data-level="1" disabled></button>
+
+					<button class="bid bid-clubs bid-level2" data-denom="clubs" data-level="2" disabled></button>
+					<button class="bid bid-diams bid-level2" data-denom="diams" data-level="2" disabled></button>
+					<button class="bid bid-hearts bid-level2" data-denom="hearts" data-level="2" disabled></button>
+					<button class="bid bid-spades bid-level2" data-denom="spades" data-level="2" disabled></button>
+					<button class="bid bid-nt bid-level2" data-denom="nt" data-level="2" disabled></button>
+
+					<button class="bid bid-clubs bid-level3" data-denom="clubs" data-level="3" disabled></button>
+					<button class="bid bid-diams bid-level3" data-denom="diams" data-level="3" disabled></button>
+					<button class="bid bid-hearts bid-level3" data-denom="hearts" data-level="3" disabled></button>
+					<button class="bid bid-spades bid-level3" data-denom="spades" data-level="3" disabled></button>
+					<button class="bid bid-nt bid-level3" data-denom="nt" data-level="3" disabled></button>
+
+					<button class="bid bid-clubs bid-level4" data-denom="clubs" data-level="4" disabled></button>
+					<button class="bid bid-diams bid-level4" data-denom="diams" data-level="4" disabled></button>
+					<button class="bid bid-hearts bid-level4" data-denom="hearts" data-level="4" disabled></button>
+					<button class="bid bid-spades bid-level4" data-denom="spades" data-level="4" disabled></button>
+					<button class="bid bid-nt bid-level4" data-denom="nt" data-level="4" disabled></button>
+
+					<button class="bid bid-clubs bid-level5" data-denom="clubs" data-level="5" disabled></button>
+					<button class="bid bid-diams bid-level5" data-denom="diams" data-level="5" disabled></button>
+					<button class="bid bid-hearts bid-level5" data-denom="hearts" data-level="5" disabled></button>
+					<button class="bid bid-spades bid-level5" data-denom="spades" data-level="5" disabled></button>
+					<button class="bid bid-nt bid-level5" data-denom="nt" data-level="5" disabled></button>
+
+					<button class="bid bid-clubs bid-level6" data-denom="clubs" data-level="6" disabled></button>
+					<button class="bid bid-diams bid-level6" data-denom="diams" data-level="6" disabled></button>
+					<button class="bid bid-hearts bid-level6" data-denom="hearts" data-level="6" disabled></button>
+					<button class="bid bid-spades bid-level6" data-denom="spades" data-level="6" disabled></button>
+					<button class="bid bid-nt bid-level6" data-denom="nt" data-level="6" disabled></button>
+
+					<button class="bid bid-clubs bid-level7" data-denom="clubs" data-level="7" disabled></button>
+					<button class="bid bid-diams bid-level7" data-denom="diams" data-level="7" disabled></button>
+					<button class="bid bid-hearts bid-level7" data-denom="hearts" data-level="7" disabled></button>
+					<button class="bid bid-spades bid-level7" data-denom="spades" data-level="7" disabled></button>
+					<button class="bid bid-nt bid-level7" data-denom="nt" data-level="7" disabled></button>
+
+					<button class="bid bid-pass" data-name="pass" disabled></button>
+					<button class="bid bid-double" data-name="double" disabled></button>
+					<button class="bid bid-redouble" data-name="redouble" disabled></button>
+					<button class="bid bid-up" data-name="up" disabled></button>
+
+					<button class="bid bid-custom" data-name="custom" disabled>Custom</button>
+					<button class="bid bid-convention" data-name="convention" disabled>Convention</button>
+				</div>
+			</div>
+
+			<!-- Current Auction -->
+			<div id="auction-cell">
+				<div id="auction">
+					<div class="bid header">North</div>
+					<div class="bid header">East</div>
+					<div class="bid header">South</div>
+					<div class="bid header">West</div>
+					<div class="bid">&nbsp;</div>
+					<div class="bid">&nbsp;</div>
+					<div class="bid">&nbsp;</div>
+					<div class="bid">&nbsp;</div>
+				</div>
+			</div>
+
+			<!-- Tree Visualiser -->
+			<div id="treeview-cell">
+				<div id="treeview-mode">
+					<div id="mode-openings" class="mode active">Openings</div>
+					<div id="mode-conventions" class="mode">Conventions</div>
+				</div>
+				<div id="treeview-main">
+				</div>
+			</div>
+
+			<!-- Information on current bid -->
+			<div id="curbid-cell">
+				<div id="curbid-name">
+					<div class="bid bid-empty"></div>
+					<div class="seat">(N)</div>
+				</div>
+				<div id="curbid-options">
+					<div>
+						<input type="checkbox" id="curbid-alertable" disabled>
+						<label for="curbid-alertable">Alertable</label>
+					</div>
+					<div>
+						<input type="number" style="width: 30px" id="curbid-minhcp" disabled>
+						&mdash;
+						<input type="number" style="width: 30px" id="curbid-maxhcp" disabled>
+						HCP
+					</div>
+				</div>
+				<textarea rows="2" id="curbid-description" placeholder="No description" disabled></textarea>
+				<div id="curbid-buttons">
+					<div>
+						<button id="curbid-moveup" disabled>⯅</button>
+						<button id="curbid-movedown" disabled>⯆</button>
+					</div>
+					<div>
+						<button id="curbid-rename" disabled>Rename</button>
+						<button id="curbid-delete" disabled>Delete</button>
+					</div>
+					<div>
+						<button id="curbid-make-convention" disabled>Add to Conventions</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</main>
+
+	<!-- Copyright footer -->
+	<footer>
+		<div id="copyright">
+			Copyright &copy; Dominic Price 2020
+		</div>
+		<div id="quote">
+			“Better to clear up your agreements with a question than with a zero.” - Robert S. todd
+		</div>
+	</footer>
+
+	<script>
+		window.addEventListener("DOMContentLoaded", function () {
+			initLogo();
+			initQuotes();
+		});
+	</script>
+</body>
+</html>

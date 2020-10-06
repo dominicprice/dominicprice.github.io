@@ -1,0 +1,165 @@
+﻿/*************
+* Named Bids *
+*************/
+
+/* Clubs */
+.bid-clubs {
+	color: rgb(0, 137, 0);
+	background-color: rgb(219, 255, 219);
+}
+.bid.bid-clubs::after {
+	content: "♣";
+}
+
+/* Diamonds */
+.bid-diams {
+	color: rgb(255, 85, 0);
+	background-color: rgb(255, 198, 136);
+}
+.bid.bid-diams::after {
+	content: "♦";
+}
+
+/* Hearts */
+.bid-hearts {
+	color: rgb(255, 0, 0);
+	background-color: rgb(255, 206, 206);
+}
+.bid.bid-hearts::after {
+	content: "♥";
+}
+
+/* Spades */
+.bid-spades {
+	color: rgb(0, 0, 206);
+	background-color: rgb(206, 206, 255);
+}
+.bid.bid-spades::after {
+	content: "♠";
+}
+
+/* No Trumps */
+.bid-nt {
+	color: black;
+	background-color: white;
+}
+.bid.bid-nt::after {
+	content: "NT";
+}
+
+/* Pass */
+.bid-pass {
+	color: white;
+	background-color: rgb(82, 137, 27);
+}
+.bid.bid-pass::after {
+	content: "PASS";
+}
+
+/* Double */
+.bid-double {
+	color: white;
+	background-color: rgb(255, 0, 0);
+}
+.bid.bid-double::after {
+	content: "X";
+}
+
+/* Redouble */
+.bid-redouble {
+	color: white;
+	background-color: rgb(40, 40, 206);
+}
+.bid.bid-redouble::after {
+	content: "XX";
+}
+
+/* Custom */
+.bid-custom {
+	color: black;
+	background-color: white;
+}
+.bid.bid-custom::after {
+	content: "";
+}
+
+.bid-convention {
+	color: black;
+	background-color: white;
+}
+.bid.bid-convention::after {
+	content: "";
+}
+
+/* Up */
+.bid-up {
+	background-color: #c27ac0;
+	color: white;
+}
+.bid.bid-up::after {
+	content: "🡅";
+}
+
+/* Empty */
+.bid-empty {
+	color: #888;
+	background-color: #ddd;
+}
+.bid.bid-empty::after {
+	content: "N/A";
+}
+
+.bid-skip {
+	background-color: #ddd;
+	color: black;
+}
+
+
+/*********
+* Levels *
+*********/
+
+.bid.bid-level1::before {
+	content: "1";
+}
+
+.bid.bid-level2::before {
+	content: "2";
+}
+
+.bid.bid-level3::before {
+	content: "3";
+}
+
+.bid.bid-level4::before {
+	content: "4";
+}
+
+.bid.bid-level5::before {
+	content: "5";
+}
+
+.bid.bid-level6::before {
+	content: "6";
+}
+
+.bid.bid-level7::before {
+	content: "7";
+}
+
+
+/*****************
+* Bid Attributes *
+*****************/
+
+.bid {
+	text-align:center;
+}
+
+.bid.alertable {
+	box-shadow: inset 0px 0px 0px 1px red;
+}
+
+.bid-multi {
+	background-color: inherit;
+}

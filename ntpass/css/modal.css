@@ -1,0 +1,161 @@
+﻿/************
+* Modal Box *
+************/
+
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal .box {
+    background-color: white;
+    border: 1px solid black;
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+
+.modal .header {
+    width: inherit;
+    height: 30px;
+    margin: -1px;
+    border-bottom: 1px solid black;
+    background-color: #ccc;
+    display: flex;
+}
+
+.modal .header .title {
+    flex: 1;
+    margin-left: 5px;
+    font-weight: bold;
+    line-height: 30px;
+}
+
+.modal .header .close {
+    color: black;
+    float: right;
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 30px;
+    height: 30px;
+    width: 30px;
+    background-color: #c44;
+    font-weight: bold;
+    border-left: 1px solid black;
+    text-align: center;
+    user-select: none;
+}
+
+.modal .header .close::after {
+    content: "×";
+}
+
+.modal .header .close:active {
+    background-color: #922;
+}
+
+
+.modal .main {
+    padding: 5px;
+    margin-top: -2px;
+    text-align: center;
+    overflow-y: auto;
+    width: 300px;
+    overflow-x: hidden;
+    max-height: calc(80vh - 30px);
+}
+
+
+/*****************
+* Modal Elements *
+*****************/
+
+.modal input {
+    width: 200px;
+    height: 35px;
+    border: 1px solid black;
+    border-radius: 0px;
+    font-family: inherit;
+    padding-left: 5px;
+    box-sizing: border-box;
+}
+
+.modal textarea {
+    width: 200px;
+    height: 100px;
+    border: 1px solid black;
+    resize: none;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.modal input + textarea {
+    border-top: none;
+}
+
+.modal button {
+    height: 35px;
+    min-width: 50px;
+    border: 1px solid black;
+    font-family: inherit;
+    background-color: #eee;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.modal button:active {
+    background-color: #ddd;
+}
+
+.modal input + button,
+.modal button + button {
+    border-left: 0px;
+}
+
+.modal button.yes {
+    background-color: green;
+    color: white;
+}
+
+.modal button.yes:active {
+    background-color: #040;
+    color: white;
+}
+
+.modal button.no {
+    background-color: red;
+    color: white;
+}
+
+.modal button.no:active {
+    background-color: #500;
+    color: white;
+}
+
+.modal ul.select {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.modal ul.select li {
+    cursor: pointer;
+    text-align: center;
+    width: 280px;
+    margin: auto;
+    background-color #eee;
+    padding: 5px;
+}
+
+.modal ul.select li:hover {
+    background-color: #ddd;
+}
