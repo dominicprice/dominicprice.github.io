@@ -2,130 +2,36 @@
 <html>
 	<head>
 		<title>Crossword Helper</title>
-		<meta name="apple-mobile-web-app-title" content="Crossword Helper">
-		<meta name=viewport content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<meta charset="utf-8">
+		
+		<!-- Apple webapp metainfo -->
 		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-title" content="CrossHelp">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="apple-touch-icon" href="touch-icon.png">
 		<link rel="apple-touch-startup-image" href="launch.png">
-		<link rel="stylesheet" href="style.css">
+		
+		<!-- Stylesheets -->
+		<link rel="stylesheet" href="crossword.css">
+		
+		<!-- Scripts -->
+		<script src="dictionary.js" defer></script>
+		<script src="crossword.js" defer></script>
 	</head>
+	
 	<body>
 		<h1>Anagram Solver</h1>
-		<div class="form">
+		<div class="main">
 			<label for="letters">Letters</label>
-			<input type="text" placeholder="ganaram" id="letters">
+			<input type="text" value="ganarams" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="off" placeholder="ganaram" id="letters">
 			<label for="lengths">Word Lengths</label>
 			<input type="tel" placeholder="4-2" id="lengths">
 			<span></span>
 			<button id="submit">Solve</button>
+			<hr>
+			<div id="output"></div>
 		</div>
-		<h2>Results</h2>
-		<div id="output"></div>
 		
-	<script src="dictionary.js"></script>
-	<script>
-	
-		function perms(string) {
-		  if (!string || typeof string !== "string"){
-			return "Please enter a string"
-		  } else if (string.length < 2 ){
-			return string
-		  }
-
-		  let permutationsArray = [] 
-		   
-		  for (let i = 0; i < string.length; i++){
-			let char = string[i]
-
-			if (string.indexOf(char) != i)
-			continue
-
-			let remainingChars = string.slice(0, i) + string.slice(i + 1, string.length)
-
-			for (let permutation of perms(remainingChars)){
-			  permutationsArray.push(char + permutation) }
-		  }
-		  return permutationsArray
-		}
-		
-		function binSearch(arr, elem) {
-			var m = 0;
-			var n = arr.length - 1;
-			while (m <= n) {
-				var k = (n + m) >> 1;
-				if (elem > arr[k]) {
-					m = k + 1;
-				} else if(elem < arr[k]) {
-					n = k - 1;
-				} else {
-					return k;
-				}
-			}
-			return -1;
-		}
-		
-		document.getElementById("submit").addEventListener("click", function () {
-			let letters = document.getElementById("letters").value;
-			let lengths = document.getElementById("lengths").value.split("-");
-			let output = document.getElementById("output");
-			
-			// Clear output;
-			output.innerHTML = "";
-
-			// If no lengths specified, default to length of letters
-			if (lengths.length === 1 && lengths[0] === "") {
-				lengths = [ letters.length ];
-			}
-			else {
-				// If the lengths do not add up to the length of letters, then throw a hissy fit. At the
-				// same time we convert them to integers
-				let totalLength = 0;
-				for (let i = 0; i < lengths.length; ++i) {
-					lengths[i] = parseInt(lengths[i]);
-					totalLength += lengths[i]
-				}
-				if (totalLength != letters.length) {
-					console.log(totalLength, letters.length);
-					output.innerHTML = "<span class='warning'>Lengths do not add up to number of letters</span>";
-					return;
-				}
-			}
-			
-			let candidates = [];
-			
-			for (const perm of perms(letters)) {
-				let pos = 0;
-				let exists = true;
-				let candidate = "";
-				for (const len of lengths) {
-					let word = perm.substring(pos, pos + len);
-					if (binSearch(word_list, word) === -1) {
-						exists = false;
-						break;
-					}
-					pos += len;
-					candidate += word + " ";
-				}
-				if (exists) {
-					candidates.push(candidate);
-				}
-			}
-			
-			if (candidates.length === 0) {
-				output.innerHTML = "No solutions found";
-			}
-			else {
-				let ul = document.createElement("ul");
-				for (const candidate of candidates) {
-					let li = document.createElement("li");
-					li.innerHTML = candidate;
-					ul.appendChild(li);
-				}
-				output.appendChild(ul);
-			}			
-		});
-	</script>
 	</body>
 </html>
