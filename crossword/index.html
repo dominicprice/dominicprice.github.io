@@ -24,11 +24,17 @@
 		<h1>Anagram Solver</h1>
 		<div class="main">
 			<label for="letters">Letters</label>
-			<input type="text" value="ganarams" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="off" placeholder="ganaram" id="letters">
+			<div class="inputbox">
+				<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="off" placeholder="ganaram" id="letters">
+				<button id="clear-letters">Clear</button>
+			</div>
 			<label for="lengths">Word Lengths</label>
-			<input type="tel" placeholder="4-2" id="lengths">
-			<span></span>
-			<button id="submit">Solve</button>
+			<div class="inputbox">
+				<input type="tel" placeholder="4-2" id="lengths">
+				<button id="clear-lengths">Clear</button>
+			</div>
+			<button id="solve" class="green">Solve</button>
+			<button id="stop" class="red" disabled>Stop</button>
 			<hr>
 			<div id="output"></div>
 		</div>

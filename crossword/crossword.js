@@ -44,12 +44,13 @@ String.prototype.sort = function() {
 String.prototype.splitAt = function(indices) {
 	let ret = [];
 	let start = 0;
-	indices.push(this.length);
 	for (let i = 0; i < indices.length; ++i) {
 		if (start != indices[i])
 			ret.push(this.substring(start, indices[i]));
 		start = indices[i];
 	}
+	if (start != this.length)
+		ret.push(this.substring(start));
 	return ret;
 }
 
@@ -58,10 +59,10 @@ String.prototype.splitAt = function(indices) {
 String.prototype.nextPermutation = function() {
 	let first = 0, last = this.length;
 	if (first === last)
-		return false;
+		return this.valueOf();
 	let i = last;
 	if (first === --i)
-		return false;
+		return this.valueOf();
 	
 	while (true) {
 		let i1 = i;
@@ -74,7 +75,7 @@ String.prototype.nextPermutation = function() {
 			return s1 + s2;
 		}
 		if (i === first) {
-			return this;
+			return this.valueOf();
 		}
 	}
 }
@@ -136,6 +137,13 @@ function linkFieldToButton(field, btn) {
 	});
 }
 
+function btnClearAndFocus(btn, field) {
+	btn.addEventListener("click", function() {
+		field.value = "";
+		field.focus();
+	});
+}
+
 // Shorthand for document.querySelector
 function $(...args) {
 	return document.querySelector(...args);
@@ -148,7 +156,11 @@ function $(...args) {
 
 function onSolveAnagram() {
 	let letters = $("#letters").value.replace(/\s/g, '').toLowerCase().sort();
-	let lengths = $("#lengths").value.split("-");
+	let lengths = $("#lengths").value.match(/\d+/g);
+	if (lengths)
+		lengths = lengths.map(Number);
+	else
+		lengths = [ letters.length ];
 	let output = $("#output");
 	
 	// Clear output;
@@ -158,51 +170,74 @@ function onSolveAnagram() {
 	if (letters.length === 0)
 		return;
 
-	// If no lengths specified, default to length of letters
-	if (lengths.length === 1 && lengths[0] === "") {
-		lengths = [ letters.length ];
+	if (lengths.reduce((t,n)=>{return t+n;}) != letters.length) {
+		output.innerHTML = "<span class='warning'>Lengths do not add up to number of letters</span>";
+		return;
 	}
-	else {
-		// If the lengths do not add up to the length of letters, then throw a hissy fit. At the
-		// same time we convert them to integers
-		let totalLength = 0;
-		for (let i = 0; i < lengths.length; ++i) {
-			lengths[i] = parseInt(lengths[i]);
-			totalLength += lengths[i]
-		}
-		if (totalLength != letters.length) {
-			console.log(totalLength, letters.length);
-			output.innerHTML = "<span class='warning'>Lengths do not add up to number of letters</span>";
-			return;
-		}
-	}
-	
-	// Set up output list
+
+	// Set up output
+	let i = 0;
+	let stopExecution = false;
+	let timer = Date.now();
+	output.innerHTML = `<span id="progress">Checking permutation <span id="its">${i}</span> of ${letters.nPerms()}...</span>`;
+	$("#stop").toggleAttribute("disabled", false);
+	$("#solve").toggleAttribute("disabled", true);
+	$("#stop").addEventListener("click", function() { stopExecution = true; });
 	let ul = document.createElement("ul");
 	output.appendChild(ul);
-
-	// Loop through all permutations finding valid words
-	do {
-		let pos = 0;
-		let exists = true;
-		let words = letters.splitAt(lengths);
-		for (const word of words) {
-			if (wordList.binSearch(word) === -1) {
-				exists = false;
-				break;
+		
+	// Loop callback
+	let loop = function() {
+		// Just looks nicer to have it not always increment uniformly...
+		const maxIterations = 40000 + Math.round(Math.random() * 20000);
+		for (let k = 0; k < maxIterations; ++k) {
+			// Check if this permutation is a valid series of words
+			let exists = true;
+			console.log(letters);
+			let words = letters.splitAt(lengths);
+			for (const word of words) {
+				if (wordList.binSearch(word) === -1) {
+					exists = false;
+					break;
+				}
+			}
+			// Add to output if valid
+			if (exists) {
+				let li = document.createElement("li");
+				li.innerHTML = words.join(" ");
+				ul.appendChild(li);
+			}
+			
+			// Exit condition check 1: user has clicked stop
+			if (stopExecution) {
+				$("#stop").toggleAttribute("disabled", true);
+				$("#solve").toggleAttribute("disabled", false);
+				$("#progress").innerHTML = "Search aborted";
+				return;
+			}
+			
+			// Exit condition check 2: reached the last permutation
+			if (letters === (letters = letters.nextPermutation())) {
+				$("#stop").toggleAttribute("disabled", true);
+				$("#solve").toggleAttribute("disabled", false);
+				$("#progress").innerHTML = `Search complete in ${(Date.now() - timer) / 1000}s`;
+				if (ul.childElementCount === 0) {
+					let li = document.createElement("li");
+					li.innerHTML = "No results found";
+					li.classList.add("failure");
+					ul.appendChild(li);	
+				}
+				return;
 			}
 		}
-		if (exists) {
-			let li = document.createElement("li");
-			li.innerHTML = words.join(" ");
-			ul.appendChild(li);
-		}
-	}
-	while (letters !== (letters = letters.nextPermutation()));
-	
-	// No solutions found
-	if (ul.childElementCount === 0)
-		output.innerHTML = "<span class='failure'>No results found</span>"
+		
+		// Update progress display
+		i += maxIterations;
+		$("#its").innerHTML = i;
+		setTimeout(loop, 0);
+	};
+
+	setTimeout(loop, 0);
 }
 
 
@@ -212,9 +247,12 @@ function onSolveAnagram() {
 
 function init() {
 	// Anagram Solver
-	linkFieldToButton($("#letters"), $("#submit"));
-	linkFieldToButton($("#lengths"), $("#submit"));	
-	$("#submit").addEventListener("click", onSolveAnagram);
+	linkFieldToButton($("#letters"), $("#solve"));
+	btnClearAndFocus($("#clear-letters"), $("#letters"));
+	linkFieldToButton($("#lengths"), $("#solve"));
+	btnClearAndFocus($("#clear-lengths"), $("#lengths"));
+	
+	$("#solve").addEventListener("click", onSolveAnagram);
 	
 }
 
