@@ -193,7 +193,6 @@ function onSolveAnagram() {
 		for (let k = 0; k < maxIterations; ++k) {
 			// Check if this permutation is a valid series of words
 			let exists = true;
-			console.log(letters);
 			let words = letters.splitAt(lengths);
 			for (const word of words) {
 				if (wordList.binSearch(word) === -1) {
