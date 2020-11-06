@@ -1,0 +1,11 @@
+#output ul {
+	list-style-type: none;
+	padding: 5px;
+	margin: 0;
+}
+
+#output li {
+	text-align: center;
+	text-transform: uppercase;
+	padding: 5px;
+}
