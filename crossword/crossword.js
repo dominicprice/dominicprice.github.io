@@ -177,9 +177,9 @@ function onSolveAnagram() {
 
 	// Set up output
 	let i = 0;
+	let n = letters.nPerms();
 	let stopExecution = false;
 	let timer = Date.now();
-	output.innerHTML = `<span id="progress">Checking permutation <span id="its">${i}</span> of ${letters.nPerms()}...</span>`;
 	$("#stop").toggleAttribute("disabled", false);
 	$("#solve").toggleAttribute("disabled", true);
 	$("#stop").addEventListener("click", function() { stopExecution = true; });
@@ -189,7 +189,7 @@ function onSolveAnagram() {
 	// Loop callback
 	let loop = function() {
 		// Just looks nicer to have it not always increment uniformly...
-		const maxIterations = 40000 + Math.round(Math.random() * 20000);
+		const maxIterations = 50000;
 		for (let k = 0; k < maxIterations; ++k) {
 			// Check if this permutation is a valid series of words
 			let exists = true;
@@ -211,6 +211,7 @@ function onSolveAnagram() {
 			if (stopExecution) {
 				$("#stop").toggleAttribute("disabled", true);
 				$("#solve").toggleAttribute("disabled", false);
+				$("#solve").innerHTML = "Solve";
 				$("#progress").innerHTML = "Search aborted";
 				return;
 			}
@@ -219,7 +220,8 @@ function onSolveAnagram() {
 			if (letters === (letters = letters.nextPermutation())) {
 				$("#stop").toggleAttribute("disabled", true);
 				$("#solve").toggleAttribute("disabled", false);
-				$("#progress").innerHTML = `Search complete in ${(Date.now() - timer) / 1000}s`;
+				$("#solve").innerHTML = "Solve";
+				$("#output").innerHTML += `<div class="footnote">Search complete in ${(Date.now() - timer) / 1000}s</div>`;
 				if (ul.childElementCount === 0) {
 					let li = document.createElement("li");
 					li.innerHTML = "No results found";
@@ -232,7 +234,7 @@ function onSolveAnagram() {
 		
 		// Update progress display
 		i += maxIterations;
-		$("#its").innerHTML = i;
+		$("#solve").innerHTML = `${Math.floor(100 * i / n)}%`;
 		setTimeout(loop, 0);
 	};
 

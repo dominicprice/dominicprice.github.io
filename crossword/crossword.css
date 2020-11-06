@@ -4,6 +4,7 @@ body {
 }
 
 h1, h2 {
+	margin: 5px;
 	text-align: center;
 }
 
@@ -75,7 +76,7 @@ input[type=submit]:hover {
 
 ul {
 	list-style-type: none;
-	padding: 0;
+	padding: 5px;
 	margin: 0;
 }
 
@@ -83,6 +84,12 @@ li {
 	text-align: center;
 	text-transform: uppercase;
 	padding: 5px;
+}
+
+.footnote {
+	text-align: right;
+	font-size: 0.8em;
+	color: #aaa;
 }
 
 hr {
@@ -95,7 +102,7 @@ hr {
 
 .main {
   border-radius: 5px;
-  background-color: #f2f2f2;
+  background-color: #e5edf4;
   padding: 20px;
   max-width: 860px;
   margin: auto;
