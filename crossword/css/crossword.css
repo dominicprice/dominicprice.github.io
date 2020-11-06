@@ -50,6 +50,7 @@ h1, h2 {
 	text-decoration: none;
 	border-radius: 0px 0px 10px 10px;
 	transition: 0.2s;
+	border-right: none;
 }
 
 .navbar .logo {
@@ -60,11 +61,11 @@ h1, h2 {
 	
 }
 
-.navbar a:not(:last-child) {
-	border-right:none;
+.navbar a:hover {
+	background-color: #eee;
 }
 
-.navbar a:hover {
+.navbar a.active {
 	background-color: #eee;
 }
 

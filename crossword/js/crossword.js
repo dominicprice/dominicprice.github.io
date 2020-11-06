@@ -146,7 +146,6 @@ function ajaxGetRequest(request, successCallback, failureCallback = (response)=>
 			failureCallback(xhr.responseText);
 		}
 	};
-	console.log(request);
 	xhr.open('GET', request);
 	xhr.send();
 }

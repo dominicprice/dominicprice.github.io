@@ -3,7 +3,7 @@
 ***************************/
 
 function onFind() {
-	let query = $("#letters").value.replace(/\sg/, "+").replace(/[\W\+]/g, "");
+	let query = $("#letters").value.replace(/\s+/g, "+").toUpperCase().replace(/[^A-Z\+]/g, "");
 	$("#output").innerHTML = `Retrieving results for "${query}"`;
 	let endpoint;
 	if ($("#meanslike").checked)
@@ -35,12 +35,13 @@ function onReceiveData(response) {
 		$("#results").innerHTML += `<li>${entry.word}</li>`;
 	if ($("#results").childElementCount === 0)
 		$("#results").innerHTML = `<li class="failure">No results found</li>`;			
-	output.innerHTML += `<div class="footnote">Results kindly powered for free by the <a href="https://www.datamuse.com/api/">Datamuse API</a></div>`;
+	output.innerHTML += `<div class="footnote">Results kindly powered for free by the <a href="https://www.datamuse.com/api/" target="_blank">Datamuse API</a></div>`;
 }
 
 function onReceiveError(response) {
 	let output = $("#output");
-	output.innerHTML += `<span class="warning">${response}</span>`;
+	output.innerHTML += `<span class="warning">An error occurred when attempting to get results. The response from the server is printed below</span>`;
+	output.innerHTML += response;
 }
 
 /***************************
