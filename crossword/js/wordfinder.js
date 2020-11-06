@@ -2,30 +2,115 @@
 	     Callbacks
 ***************************/
 
-function onFind() {
-	let query = $("#letters").value.replace(/\s+/g, "+").toUpperCase().replace(/[^A-Z\+]/g, "");
-	$("#output").innerHTML = `Retrieving results for "${query}"`;
-	let endpoint;
-	if ($("#meanslike").checked)
-		endpoint="words?ml";
-	else if ($("#synonyms").checked)
-		endpoint="words?rel_syn";
-	else if ($("#antonyms").checked) 
-		endpoint="words?rel_ant";
-	else if ($("#soundslike").checked) 
-		endpoint="words?sl"
-	else if ($("#homophones").checked) 
-		endpoint="words?rel_hom";
-	else if ($("#rhymes").checked) 
-		endpoint="words?rel_rhy";
-	else if ($("#approxrhymes").checked) 
-		endpoint="words?rel_nry";
-	else if ($("#triggers").checked) 
-		endpoint="words?rel_trg";
-	else if ($("#completions").checked) 
-		endpoint="sug?s";
+function createInputBox() {
+	let res = document.createElement("div");
+	res.classList.add("inputbox");
+	res.innerHTML = `
+		<input type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="off" placeholder="Enter word or phrase here" id="letters">
+		<select>
+		<option>Similar Meaning</option>
+		<option>Similar Sound</option>
+		<option>Similar Spelling</option>
+		<option>Associated Nouns</option>
+		<option>Associated Adjectives</option>
+		<option>Synonyms</option>
+		<option>Triggers</option>
+		<option>Antonyms</option>
+		<option>Hypernyms</option>
+		<option>Hyponyms</option>
+		<option>Holonyms</option>
+		<option>Meronyms</option>
+		<option>Frequent followers</option>
+		<option>Frequent Predecessors</option>
+		<option>Rhymes</option>
+		<option>Approximate Rhymes</option>
+		<option>Homophones</option>
+		<option>Consonant Match</option>
+	</select>
+	<button class="red">&#x2716;</button>`;
 	
-	ajaxGetRequest(`https://api.datamuse.com/${endpoint}=${query}`, onReceiveData, onReceiveError);
+	res.getElementsByTagName("button")[0].addEventListener("click", onRemoveInputBox);
+	linkFieldToButton(res.getElementsByTagName("input")[0], $("#find"));
+	
+	return res;
+}
+
+function onAddInputBox() {
+	$("#input-boxes").appendChild(createInputBox());
+}
+
+function onRemoveInputBox() {
+	this.parentNode.remove();
+	if ($("#input-boxes").childElementCount === 0)
+		onAddInputBox();
+}
+
+function onReset() {
+	$("#input-boxes").innerHTML = "";
+	onAddInputBox();
+}
+
+function onToggleHelp() {
+	$("#helpbox").classList.toggle("hidden");
+}
+
+function onFind() {
+	$("#output").innerHTML = "Building query...";
+	let request = "https://api.datamuse.com/words?"
+	for (const ibox of $$(".inputbox")) {
+		let searchTerm = ibox.getElementsByTagName("input")[0].value;
+		let endPoint = ibox.getElementsByTagName("select")[0].value;
+		let query;
+		
+		if (endPoint === "Similar Meaning")
+			query = "ml";
+		else if (endPoint === "Similar Sound")
+			query = "sl";
+		else if (endPoint === "Similar Spelling")
+			query = "sp";
+		else if (endPoint === "Associated Nouns")
+			query = "rel_jja";
+		else if (endPoint === "Associated Adjectives")
+			query = "rel_jjb";
+		else if (endPoint === "Synonyms")
+			query = "rel_syn";
+		else if (endPoint === "Triggers")
+			query = "rel_trg";
+		else if (endPoint === "Antonyms")
+			query = "rel_ant";
+		else if (endPoint === "Hypernyms")
+			query = "rel_spc";
+		else if (endPoint === "Hyponyms")
+			query = "rel_gen";
+		else if (endPoint === "Holonyms")
+			query = "rel_com";
+		else if (endPoint === "Meronyms")
+			query = "rel_par";
+		else if (endPoint === "Frequent Followers")
+			query = "rel_bga";
+		else if (endPoint === "Frequent Predecessors")
+			query = "rel_bgb";
+		else if (endPoint === "Rhymes")
+			query = "rel_rhy";
+		else if (endPoint === "Approximate Rhymes")
+			query = "rel_nry";
+		else if (endPoint === "Homophones")
+			query = "rel_hom";
+		else if (endPoint === "Consonant Match")
+			query = "rel_cns";
+		else 
+			continue;
+		
+		if (endPoint === "Similar Spelling") {
+			request += query + "=" + searchTerm.replace(/\s+/g, "+").toUpperCase().replace(/[^A-Z\+\*\?]/g, "") + "&";
+		}
+		else {
+			request += query + "=" + searchTerm.replace(/\s+/g, "+").toUpperCase().replace(/[^A-Z\+]/g, "") + "&";
+		}
+	}
+	
+	$("#output").innerHTML = "Sending request...";
+	ajaxGetRequest(request, onReceiveData, onReceiveError);
 }
 
 function onReceiveData(response) {
@@ -40,8 +125,8 @@ function onReceiveData(response) {
 
 function onReceiveError(response) {
 	let output = $("#output");
-	output.innerHTML += `<span class="warning">An error occurred when attempting to get results. The response from the server is printed below</span>`;
-	output.innerHTML += response;
+	console.log("Response from server:", response);
+	output.innerHTML += `<div class="warning">An error occurred when attempting to get results.</div>`;
 }
 
 /***************************
@@ -49,10 +134,11 @@ function onReceiveError(response) {
 ***************************/
 
 function init() {
-	linkFieldToButton($("#letters"), $("#find"));
-	btnClearAndFocus($("#clear-letters"), $("#letters"));
-	
+	$("#new-input-box").addEventListener("click", onAddInputBox);
 	$("#find").addEventListener("click", onFind);
+	$("#reset").addEventListener("click", onReset);
+	$("#help").addEventListener("click", onToggleHelp);
+	onAddInputBox();
 }
 
 init();

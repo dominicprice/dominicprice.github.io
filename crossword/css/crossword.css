@@ -125,6 +125,8 @@ button {
 	cursor: pointer;
 	outline: none;
 	border-radius: 5px;
+	background-color: #e7e7e7;
+	color: black;
 }
 
 button.green {
@@ -140,6 +142,11 @@ button.red {
 button.blue {
 	color: white;
 	background-color: #008cba;
+}
+
+button.black {
+	color: white;
+	background-color: #555;
 }
 
 button[disabled] {
@@ -241,12 +248,17 @@ input[type=submit]:hover {
 	border-right-width: 0px;
 }
 
+.inputbox select {
+	margin: 8px 0;
+	padding: 14px 20px;
+	border: 1px solid #ccc;
+	outline: none;
+}
+
 .inputbox button {
 	border: 1px solid #ccc;
 	border-left-width: 0px;
 	flex: 0;
-	background-color: #e7e7e7;
-	color: black;
 	padding: 14px 20px;
 	margin: 8px 0;
 	border-radius: 0px 4px 4px 0px;

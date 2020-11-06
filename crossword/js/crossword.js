@@ -177,3 +177,8 @@ function btnClearAndFocus(btn, field) {
 function $(...args) {
 	return document.querySelector(...args);
 }
+
+// Shorthand for document.querySelectorAll
+function $$(...args) {
+	return document.querySelectorAll(...args);
+}
