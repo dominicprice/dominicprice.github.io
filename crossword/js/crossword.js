@@ -1,4 +1,10 @@
 /***************************
+	Global state
+***************************/
+
+DEBUGMODE = false;
+
+/***************************
 	Math functions
 ***************************/
 
@@ -47,15 +53,11 @@ String.prototype.sort = function() {
 
 // Split a string at the specified locations
 String.prototype.splitAt = function(indices) {
-	let ret = [];
-	let start = 0;
-	for (let i = 0; i < indices.length; ++i) {
-		if (start != indices[i])
-			ret.push(this.substring(start, indices[i]));
-		start = indices[i];
+	let splits = [0, ...indices.map((t=>n=>t+=n)(0)), this.length].uniquify();
+	let ret = []
+	for (let i = 0; i < splits.length - 1; ++i) {
+		ret.push(this.substring(splits[i], splits[i+1]));
 	}
-	if (start != this.length)
-		ret.push(this.substring(start));
 	return ret;
 }
 
@@ -102,7 +104,7 @@ String.prototype.nPerms = function() {
 	Array methods
 ***************************/
 
-// Do a binary search of an array for an element, returning the position
+// Do a binary search of a sorted array for an element, returning the position
 // if it exists otherwise -1
 Array.prototype.binSearch = function(elem) {
 	var m = 0;
@@ -120,6 +122,34 @@ Array.prototype.binSearch = function(elem) {
 	return -1;
 }
 
+// Remove duplicate elements from a sorted array
+Array.prototype.uniquify = function() {
+	for (let i = this.length - 1; i >= 1; --i) {
+		if (this[i-1] === this[i])
+			this.splice(i-1,1);
+	}
+	return this;
+};
+
+
+/***************************
+	AJAX Helper functions
+***************************/
+
+function ajaxGetRequest(request, successCallback, failureCallback = (response)=>{}) {
+	let xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) {
+			successCallback(xhr.responseText);
+		}
+		else {
+			failureCallback(xhr.responseText);
+		}
+	};
+	xhr.open('GET', request);
+	xhr.send();
+}
+
 
 /***************************
 	DOM Helper functions
@@ -131,6 +161,16 @@ function linkFieldToButton(field, btn) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
 			btn.click();
+		}
+	});
+}
+
+// Join two fields with tab press
+function fieldSetTabTo(fieldA, fieldB) {
+	fieldA.addEventListener("keyup", function(event) {
+		if (event.keyCode === 9) {
+			event.preventDefault();
+			fieldB.focus();	
 		}
 	});
 }

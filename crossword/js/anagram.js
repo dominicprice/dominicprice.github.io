@@ -5,6 +5,8 @@
 function onSetLengthsError() {
 	$("#length-error").innerHTML = "Lengths do not add up to number of letters";
 	$("#lengths").classList.add("input-error");
+	$("#lengths").focus();
+	$("#lengths").select();
 }
 
 function onClearLengthsError() {
@@ -16,8 +18,7 @@ function onSolveAnagram() {
 	// Get form values
 	let letters = $("#letters").value.replace(/\s/g, '').toLowerCase().sort();
 	let lengths = $("#lengths").value.match(/\d+/g);
-	lengths = lengths ? lenghts.map(Number) : [ letters.length ];
-
+	lengths = lengths ? lengths.map(Number) : [ letters.length ];
 	// Do nothing if no letters specified
 	if (letters.length === 0)
 		return;
@@ -31,7 +32,7 @@ function onSolveAnagram() {
 	// Set up variables
 	let i = 0; // Number of permutations tested so far
 	const n = letters.nPerms(); // Total number of permutations
-	const maxIterations = 50000; // Number of iterations to do per timeout cycle
+	const maxIterations = DEBUGMODE ? 500 : 50000; // Number of iterations to do per timeout cycle
 	let stopExecution = false; // User-interrupt flag
 	let startTime = Date.now(); // Calculation start time
 	
@@ -104,12 +105,13 @@ function onFinishSolve(forcedExit, startTime) {
 function init() {
 	linkFieldToButton($("#letters"), $("#solve"));
 	btnClearAndFocus($("#clear-letters"), $("#letters"));
+	//fieldSetTabTo($("#letters"), $("#lengths"));
 	linkFieldToButton($("#lengths"), $("#solve"));
 	btnClearAndFocus($("#clear-lengths"), $("#lengths"));
+	//fieldSetTabTo($("#lengths"), $("#solve"));
 	
-	let resetLengths = () => { $("#length-error").innerHTML = ""; $("#lengths").classList.remove("input-error"); };
-	$("#lengths").addEventListener("input", resetLengths);
-	$("#clear-lengths").addEventListener("click", resetLengths);
+	$("#lengths").addEventListener("input", onClearLengthsError);
+	$("#clear-lengths").addEventListener("click", onClearLengthsError);
 	$("#solve").addEventListener("click", onSolveAnagram);
 	
 	$("#reset").addEventListener("click", function() {

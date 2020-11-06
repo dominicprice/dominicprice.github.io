@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Word Finder - Crossword Helper</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="icon" type="image/png" href="img/icon.png">
+		<meta charset="utf-8">
+		
+		<!-- Apple webapp metainfo -->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-title" content="CrossHelp">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="apple-touch-icon" href="img/touch-icon.png">
+		<link rel="apple-touch-startup-image" href="img/launch.png">
+		
+		<!-- Stylesheets -->
+		<link rel="stylesheet" href="css/crossword.css">
+		<link rel="stylesheet" href="css/wordfinder.css">
+		
+		<!-- Scripts -->
+		<script src="js/crossword.js" defer></script>
+		<script src="js/wordfinder.js" defer></script>
+	</head>
+	
+	<body>
+		<div class="main">
+			<h1>Word Finder</h1>
+			<label for="letters">Word/Phrase</label>
+			<div class="inputbox">
+				<input type="text" tabindex="1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="off" placeholder="ganaram" id="letters">
+				<button id="clear-letters">🗙</button>
+			</div>
+			<div class="checkgroup">
+				<label class="checkmark" for="synonyms">
+					Synonyms <input tabindex="2" type="radio" name="mode" id="synonyms" value="synonyms" checked><i></i>
+				</label>
+				<label class="checkmark" for="antonyms">
+					Antonyms <input tabindex="2" type="radio" name="mode" id="antonyms" value="antonyms"><i></i>
+				</label>
+				<label class="checkmark" for="homonyms">
+					Homonyms <input tabindex="3" type="radio" name="mode" id="homonyms" value="homonyms"><i></i>
+				</label>
+				<label class="checkmark" for="rhymes">
+					Rhymes <input tabindex="3" type="radio" name="mode" id="rhymes" value="rhymes"><i></i>
+				</label>
+				<label class="checkmark" for="triggers">
+					Triggers <input tabindex="3" type="radio" name="mode" id="triggers" value="triggers"><i></i>
+				</label>
+				<label class="checkmark" for="completions">
+					Completions <input tabindex="3" type="radio" name="mode" id="completions" value="completions"><i></i>
+				</label>
+			</div>
+			<br>
+			<button id="find" tabindex="" class="green">Find</button>
+			<hr>
+			<div id="output"></div>
+		</div>
+		
+	</body>
+</html>
