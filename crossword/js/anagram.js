@@ -105,10 +105,8 @@ function onFinishSolve(forcedExit, startTime) {
 function init() {
 	linkFieldToButton($("#letters"), $("#solve"));
 	btnClearAndFocus($("#clear-letters"), $("#letters"));
-	//fieldSetTabTo($("#letters"), $("#lengths"));
 	linkFieldToButton($("#lengths"), $("#solve"));
 	btnClearAndFocus($("#clear-lengths"), $("#lengths"));
-	//fieldSetTabTo($("#lengths"), $("#solve"));
 	
 	$("#lengths").addEventListener("input", onClearLengthsError);
 	$("#clear-lengths").addEventListener("click", onClearLengthsError);

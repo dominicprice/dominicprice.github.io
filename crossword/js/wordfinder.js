@@ -3,29 +3,38 @@
 ***************************/
 
 function onFind() {
-	$("#output").innerHTML = "Retrieving results...";
-	let query = $("#letters").value;
+	let query = $("#letters").value.replace(/\sg/, "+").replace(/[\W\+]/g, "");
+	$("#output").innerHTML = `Retrieving results for "${query}"`;
 	let endpoint;
-	if ($("#synonyms").checked)
+	if ($("#meanslike").checked)
+		endpoint="words?ml";
+	else if ($("#synonyms").checked)
 		endpoint="words?rel_syn";
 	else if ($("#antonyms").checked) 
 		endpoint="words?rel_ant";
-	else if ($("#homonyms").checked) 
-		endpoint="words?sl";
+	else if ($("#soundslike").checked) 
+		endpoint="words?sl"
+	else if ($("#homophones").checked) 
+		endpoint="words?rel_hom";
 	else if ($("#rhymes").checked) 
 		endpoint="words?rel_rhy";
+	else if ($("#approxrhymes").checked) 
+		endpoint="words?rel_nry";
 	else if ($("#triggers").checked) 
 		endpoint="words?rel_trg";
 	else if ($("#completions").checked) 
 		endpoint="sug?s";
 	
-	ajaxGetRequest(`https://api.datamuse.com/words?${endpoint}=${query}`, onReceiveData, onReceiveError);
+	ajaxGetRequest(`https://api.datamuse.com/${endpoint}=${query}`, onReceiveData, onReceiveError);
 }
 
 function onReceiveData(response) {
 	let output = $("#output");
-	output.innerHTML = response;
-	
+	output.innerHTML = `<ul id="results"></ul>`;
+	for (const entry of JSON.parse(response))
+		$("#results").innerHTML += `<li>${entry.word}</li>`;
+	if ($("#results").childElementCount === 0)
+		$("#results").innerHTML = `<li class="failure">No results found</li>`;			
 	output.innerHTML += `<div class="footnote">Results kindly powered for free by the <a href="https://www.datamuse.com/api/">Datamuse API</a></div>`;
 }
 
@@ -39,6 +48,9 @@ function onReceiveError(response) {
 ***************************/
 
 function init() {
+	linkFieldToButton($("#letters"), $("#find"));
+	btnClearAndFocus($("#clear-letters"), $("#letters"));
+	
 	$("#find").addEventListener("click", onFind);
 }
 

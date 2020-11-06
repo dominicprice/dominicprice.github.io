@@ -146,6 +146,7 @@ function ajaxGetRequest(request, successCallback, failureCallback = (response)=>
 			failureCallback(xhr.responseText);
 		}
 	};
+	console.log(request);
 	xhr.open('GET', request);
 	xhr.send();
 }
@@ -161,16 +162,6 @@ function linkFieldToButton(field, btn) {
 		if (event.keyCode === 13) {
 			event.preventDefault();
 			btn.click();
-		}
-	});
-}
-
-// Join two fields with tab press
-function fieldSetTabTo(fieldA, fieldB) {
-	fieldA.addEventListener("keyup", function(event) {
-		if (event.keyCode === 9) {
-			event.preventDefault();
-			fieldB.focus();	
 		}
 	});
 }

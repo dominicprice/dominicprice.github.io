@@ -1,6 +1,8 @@
 /* Page element styles */
 
 body {
+	margin: 0;
+	padding: 0;
 	font-family: sans-serif;
 	background-image: url("../img/background.png");
 }
@@ -10,7 +12,7 @@ body {
   background-color: #e5edf4;
   padding: 20px;
   max-width: 860px;
-  margin: auto;
+  margin: 20px auto;
 }
 
 hr {
@@ -24,6 +26,46 @@ hr {
 h1, h2 {
 	margin: 5px;
 	text-align: center;
+}
+
+
+/* Navigation bar */
+.navbar {
+	display: flex;
+	margin: 0;
+	padding: 0;
+}
+
+.navbar a,
+.navbar span {
+	text-align: center;
+	user-select: none;
+	font-variant: small-caps;
+	display: inline-block;
+	border: 1px solid black;
+	padding: 16px 8px;
+	background-color: white;
+	margin: 0;
+	color: black;
+	text-decoration: none;
+	border-radius: 0px 0px 10px 10px;
+	transition: 0.2s;
+}
+
+.navbar .logo {
+	text-align: right;
+	color: white;
+	background-color: black;
+	font-weight: bold;
+	
+}
+
+.navbar a:not(:last-child) {
+	border-right:none;
+}
+
+.navbar a:hover {
+	background-color: #eee;
 }
 
 
@@ -49,6 +91,17 @@ h1, h2 {
 	display: none;
 }
 
+#output ul {
+	list-style-type: none;
+	padding: 5px;
+	margin: 0;
+}
+
+#output li {
+	text-align: center;
+	text-transform: uppercase;
+	padding: 5px;
+}
 
 /* Form elements */
 

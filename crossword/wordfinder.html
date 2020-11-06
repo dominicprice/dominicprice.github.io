@@ -23,6 +23,12 @@
 	</head>
 	
 	<body>
+		<div class="navbar">
+			<a href="anagram.html">Anagram Solver</a>
+			<a href="wordfinder.html">Word Finder</a>
+			<span class="logo">Crossword Solver</span>
+		</div>
+	
 		<div class="main">
 			<h1>Word Finder</h1>
 			<label for="letters">Word/Phrase</label>
@@ -31,27 +37,36 @@
 				<button id="clear-letters">🗙</button>
 			</div>
 			<div class="checkgroup">
+				<label class="checkmark" for="meanslike">
+					Similar Meaning <input tabindex="2" type="radio" name="mode" id="meanslike" value="meanslike" checked><i></i>
+				</label>
 				<label class="checkmark" for="synonyms">
 					Synonyms <input tabindex="2" type="radio" name="mode" id="synonyms" value="synonyms" checked><i></i>
 				</label>
 				<label class="checkmark" for="antonyms">
-					Antonyms <input tabindex="2" type="radio" name="mode" id="antonyms" value="antonyms"><i></i>
+					Antonyms <input tabindex="3" type="radio" name="mode" id="antonyms" value="antonyms"><i></i>
 				</label>
-				<label class="checkmark" for="homonyms">
-					Homonyms <input tabindex="3" type="radio" name="mode" id="homonyms" value="homonyms"><i></i>
+				<label class="checkmark" for="soundslike">
+					Sounds Like <input tabindex="4" type="radio" name="mode" id="soundslike" value="soundslike"><i></i>
+				</label>
+				<label class="checkmark" for="homophones">
+					Homophones <input tabindex="4" type="radio" name="mode" id="homophones" value="homophones"><i></i>
 				</label>
 				<label class="checkmark" for="rhymes">
-					Rhymes <input tabindex="3" type="radio" name="mode" id="rhymes" value="rhymes"><i></i>
+					Rhymes <input tabindex="5" type="radio" name="mode" id="rhymes" value="rhymes"><i></i>
+				</label>
+				<label class="checkmark" for="approxrhymes">
+					Approximate Rhymes <input tabindex="5" type="radio" name="mode" id="approxrhymes" value="approxrhymes"><i></i>
 				</label>
 				<label class="checkmark" for="triggers">
-					Triggers <input tabindex="3" type="radio" name="mode" id="triggers" value="triggers"><i></i>
+					Triggers <input tabindex="6" type="radio" name="mode" id="triggers" value="triggers"><i></i>
 				</label>
 				<label class="checkmark" for="completions">
-					Completions <input tabindex="3" type="radio" name="mode" id="completions" value="completions"><i></i>
+					Completions <input tabindex="7" type="radio" name="mode" id="completions" value="completions"><i></i>
 				</label>
 			</div>
 			<br>
-			<button id="find" tabindex="" class="green">Find</button>
+			<button id="find" tabindex="8" class="green">Find</button>
 			<hr>
 			<div id="output"></div>
 		</div>
