@@ -121,8 +121,9 @@ function initSystem() {
 	if (sysName === null)
 		initialLoad(localStorage.getItem("system"));
 	else {
+		console.log(sysName);
 		$.ajax({
-			"url": `systems/{sysName}.json`,
+			"url": `systems/${sysName}.json`,
 			"cache": false,
 			"error": onAjaxError
 		}).done(function (data) { initialLoad(data); });
