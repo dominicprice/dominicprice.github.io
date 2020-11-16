@@ -1,6 +1,14 @@
 ﻿let denoms = ["clubs", "diams", "hearts", "spades", "nt"];
 let levels = [1, 2, 3, 4, 5, 6, 7];
 
+function replaceSuitSymbols(s) {
+	return s
+		.replace(/![cC]/g, "&clubs;")
+		.replace(/![dD]/g, "&diams;")
+		.replace(/![hH]/g, "&hearts;")
+		.replace(/![sS]/g, "&spades;");
+}
+
 class Bid {
     constructor(name, parent = null, opts = {}) {
         this.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -70,7 +78,7 @@ class Bid {
             }
             else {
                 $elem.addClass("bid-custom");
-                $elem.html(this.name);
+                $elem.html(replaceSuitSymbols(this.name));
             }
         }
         else {
@@ -91,7 +99,7 @@ class Bid {
             let $tooltip = $("<div>", { "class": "tooltip" });
             if (this.convention !== null) {
                 $("<div>", { "class": "convention-name" })
-                    .html(this.convention)
+                    .html(replaceSuitSymbols(this.convention))
                     .appendTo($tooltip);
             }
             // Add HCP range
@@ -112,7 +120,7 @@ class Bid {
             // Add description
             if (this.description.text !== "") {
                 $("<div>", { "class": "description" })
-                    .html(this.description.text)
+                    .html(replaceSuitSymbols(this.description.text))
                     .appendTo($tooltip);
             }
             else {

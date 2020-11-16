@@ -73,7 +73,6 @@ function correctOverflow(selector) {
 }
 
 function update() {
-	console.log("Updating");
 	auction.update();
 	biddingBox.update();
 	tree.update();
@@ -89,5 +88,11 @@ function initSystem() {
 	tree = new TreeView();
 	info = new InfoView();
 	menu = new Menu();
+	
+	$("#header-name").value = system.info.name;
+	$("#header-partnera").value = system.info.partnerA;
+	$("#header-partnerb").value = system.info.partnerB;
+	$("#header-overview").value = system.info.overview;
+	
 	update();
 }

@@ -125,7 +125,7 @@ class TreeView {
         if (isActive)
             $convention.addClass("active");
         $col.append($convention);
-        $convention.click(() => { this.onClickBid(system.conventions[convention]) });
+        $convention.click(() => { this.onClickConvention(convention) });
         return $convention;
     }
 
@@ -178,7 +178,7 @@ class TreeView {
             else if (children.length === 1 && children[0].name === "pass") {
                 $col.removeClass("opps");
                 $col.addClass("bid bid-pass selectable");
-                if (auction.get(i).description.alertable)
+                if (auction.get(i).children[0].description.alertable)
                     $col.addClass("alertable");
                 if (auction.get(i + 1) === children[0])
                     $col.addClass("active");

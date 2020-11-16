@@ -170,30 +170,30 @@ class InfoView {
 	}
 
 	onMoveUp() {
-		if (auction.length === 0 || auction.mode === Mode.Conventions && auction.length === 1)
+		if (auction.bids.length === 0 || auction.mode === Mode.Conventions && auction.bids.length === 1)
 			return;
 		let l = system.openings;
-		if (auction.length > 1)
-			l = auction[auction.length - 2].children;
-		let pos = l.indexOf(auction.last);
+		if (auction.bids.length > 1)
+			l = auction.bids[auction.bids.length - 2].children;
+		let pos = l.indexOf(auction.bids[auction.bids.length - 1]);
 		if (pos === 0)
 			return;
-		let tmp = auction.last;
+		let tmp = auction.bids[auction.bids.length - 1];
 		l[pos] = l[pos - 1];
 		l[pos - 1] = tmp;
 		update();
 	}
 
 	onMoveDown() {
-		if (auction.length === 0 || auction.mode === Mode.Conventions && auction.length === 1)
+		if (auction.bids.length === 0 || auction.mode === Mode.Conventions && auction.bids.length === 1)
 			return;
 		let l = system.openings;
-		if (auction.length > 1)
-			l = auction[auction.length - 2].children;
-		let pos = l.indexOf(auction.last);
+		if (auction.bids.length > 1)
+			l = auction.bids[auction.bids.length - 2].children;
+		let pos = l.indexOf(auction.bids[auction.bids.length - 1]);
 		if (pos === l.length - 1)
 			return;
-		let tmp = auction.last;
+		let tmp = auction.bids[auction.bids.length - 1];
 		l[pos] = l[pos + 1];
 		l[pos + 1] = tmp;
 		update();

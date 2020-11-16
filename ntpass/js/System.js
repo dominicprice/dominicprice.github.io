@@ -1,6 +1,5 @@
 class System {
 	constructor(s) {
-		console.log("Loading system", s);
 		this.info = {
 			"name": "",
 			"partnerA": "",

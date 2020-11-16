@@ -244,6 +244,8 @@
 #treeview-main .convention {
 	display: flex;
 	background-color: white;
+	border-bottom: 1px solid #ccc;
+	align-items: center;
 }
 
 
@@ -405,6 +407,23 @@ button#curbid-movedown {
 	cursor: default;
 }
 
+#treeview-cell .tooltip {
+	margin-top: 8px;
+}
+
+#treeview-cell .bid-pass .tooltip,
+#treeview-cell .bid-double .tooltip,
+#treeview-cell .bid-redouble .tooltip {
+	margin-top: 23px;
+}
+
+#auction .bid-pass .tooltip,
+#auction .bid-double .tooltip,
+#auction .bid-redouble .tooltip {
+	margin-top: 32px;
+}
+
+
 .bid:hover .tooltip {
 	display: block;
 }
@@ -419,7 +438,7 @@ button#curbid-movedown {
 }
 
 .tooltip .hcprange {
-
+	font-weight: bold;
 }
 
 .tooltip .description {
