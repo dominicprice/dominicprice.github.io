@@ -95,12 +95,17 @@ function update() {
 }
 
 function initialLoad(data) {
-	system.load(data);
+	if (data)
+		system.load(data);
 	$("#header-name").value = system.info.name;
 	$("#header-partnera").value = system.info.partnerA;
 	$("#header-partnerb").value = system.info.partnerB;
 	$("#header-overview").value = system.info.overview;
 	update();
+}
+
+function onAjaxError(a, b, c) {
+	console.log(a, b, c);
 }
 
 function initSystem() {
@@ -118,7 +123,8 @@ function initSystem() {
 	else {
 		$.ajax({
 			"url": `systems/{sysName}.json`,
-			"cache": false
+			"cache": false,
+			"error": onAjaxError
 		}).done(function (data) { initialLoad(data); });
 	}
 	
