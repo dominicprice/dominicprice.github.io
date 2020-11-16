@@ -248,6 +248,10 @@
 	align-items: center;
 }
 
+.convention.new-convention {
+	text-align: center;
+}
+
 
 #treeview-main .convention .name {
 	background-color: #e6e6e6;
@@ -405,7 +409,7 @@ button#curbid-movedown {
 	padding: 3px;
 	font-size: 10px;
 	text-align: left;
-	max-width: 70px;
+	max-width: 100px;
 	margin: 3px 0px 0px 5px;
 	user-select: none;
 	cursor: default;

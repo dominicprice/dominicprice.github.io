@@ -41,7 +41,7 @@ class Menu {
 		let reader = new FileReader();
 		reader.addEventListener("loadend", function (e) {
 			try {
-				system = new System(reader.result);
+				system.load(reader.result);
 				update();
 			}
 			catch (err) {

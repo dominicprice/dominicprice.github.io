@@ -85,22 +85,21 @@ class BiddingBox {
 
 		}
 		else if (name === "convention") {
-			let modal = new Modal("Choose convention");
-			let $ul = $("<ul>", { "class": "select" });
-			for (const convention in system.conventions) {
-				let $li = $("<li>", { "html": convention });
-				$li.click(function () {
-					if (auction.length === 0)
-						system.openings.push(system.conventions[convention]);
-					else
-						auction.last.children.push(system.conventions[convention]);
-					modal.close();
-					update();
-				});
-				$ul.append($li);
+			if (auction.last.convention !== null || auction.last.children.length != 0) {
+				let modal;
+				if (auction.last.convention !== null)
+					modal = new Modal(`This bid already has the convention ${auction.last.convention} assigned to it, continue?`);
+				else
+					modal = new Modal("This bid already has continuations which will be deleted if you assign a convention to it. Continue?");
+				let $no = $("<button>", { "class": "yes", "html": "No" });
+				let $yes = $("<button>", { "class": "no", "html": "Yes" });
+				$no.click(function () { modal.close(); });
+				$yes.click(function () { this.onSelectConvention(); });
+				modal.append($no).append($yes).open();
 			}
-			modal.append($ul);
-			modal.open();
+			else {
+				this.onSelectConvention();
+			}
 		}
 		else {
 			let bid = new Bid(name, auction.last);
@@ -108,6 +107,23 @@ class BiddingBox {
 				system.openings.push(bid);
 			update();
 		}
+	}
+
+	onSelectConvention() {
+		let modal = new Modal("Choose convention");
+		let $ul = $("<ul>", { "class": "select" });
+		for (const convention in system.conventions) {
+			let $li = $("<li>", { "html": convention });
+			$li.click(function () {
+				auction.last.convention = convention;
+				auction.last.children = [];
+				modal.close();
+				update();
+			});
+			$ul.append($li);
+		}
+		modal.append($ul);
+		modal.open();
 	}
 
 	update() {
@@ -127,7 +143,8 @@ class BiddingBox {
 		// Disable all bids which are already in the current bid's children
 		let alreadyBid = system.openings;
 		if (auction.last !== null)
-			alreadyBid = auction.last.children;
+			alreadyBid = auction.last.getChildren();
+		console.log(typeof alreadyBid, alreadyBid)
 		for (const bid of alreadyBid) {
 			if (typeof bid.name === "string")
 				continue;

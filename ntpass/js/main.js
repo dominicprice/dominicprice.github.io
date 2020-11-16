@@ -40,6 +40,19 @@ let tree = null;
 let info = null;
 let menu = null;
 
+function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+          tmp = item.split("=");
+          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+    return result;
+}
+
 
 /***********************
 * Master init & update *
@@ -81,18 +94,32 @@ function update() {
 	localStorage.setItem("system", system.serialize());
 }
 
+function initialLoad(data) {
+	system.load(data);
+	$("#header-name").value = system.info.name;
+	$("#header-partnera").value = system.info.partnerA;
+	$("#header-partnerb").value = system.info.partnerB;
+	$("#header-overview").value = system.info.overview;
+	update();
+}
+
 function initSystem() {
-	system = new System(localStorage.getItem("system"));
+	system = new System();
 	auction = new Auction();
 	biddingBox = new BiddingBox();
 	tree = new TreeView();
 	info = new InfoView();
 	menu = new Menu();
 	
-	$("#header-name").value = system.info.name;
-	$("#header-partnera").value = system.info.partnerA;
-	$("#header-partnerb").value = system.info.partnerB;
-	$("#header-overview").value = system.info.overview;
+	// Check for GET parameterName
+	let sysName = findGetParameter("system");
+	if (sysName === null)
+		initialLoad(localStorage.getItem("system"));
+	else {
+		$.ajax({
+			"url": `systems/{sysName}.json`,
+			"cache": false
+		}).done(function (data) { initialLoad(data); });
+	}
 	
-	update();
 }

@@ -43,10 +43,10 @@ class TreeView {
                         }
                     }
                     else if (auction.length > 1) {
-                        let pos = auction.get(auction.length - 2).children.indexOf(auction.last);
+                        let pos = auction.get(auction.length - 2).getChildren().indexOf(auction.last);
                         if (pos > 0) {
                             auction.pop();
-                            auction.push(auction.last.children[pos - 1]);
+                            auction.push(auction.last.getChildren()[pos - 1]);
                             update();
                         }
                     }
@@ -57,8 +57,8 @@ class TreeView {
                         update();
                     }
                     else {
-                        if (auction.last.children.length > 0) {
-                            auction.push(auction.last.children[0]);
+                        if (auction.last.getChildren().length > 0) {
+                            auction.push(auction.last.getChildren()[0]);
                             update();
                         }
                     }
@@ -73,10 +73,10 @@ class TreeView {
                         }
                     }
                     else if (auction.length > 1) {
-                        let pos = auction.get(auction.length - 2).children.indexOf(auction.last);
-                        if (pos < auction.get(auction.length - 2).children.length - 1) {
+                        let pos = auction.get(auction.length - 2).getChildren().indexOf(auction.last);
+                        if (pos < auction.get(auction.length - 2).getChildren().length - 1) {
                             auction.pop();
-                            auction.push(auction.last.children[pos + 1]);
+                            auction.push(auction.last.getChildren()[pos + 1]);
                             update();
                         }
                     }
@@ -121,7 +121,6 @@ class TreeView {
     addConvention(convention, $col, isActive) {
         let $convention = $("<li>", { "class": "convention selectable" });
         $convention.append($("<div>", { "class": "name", "html": convention }));
-        $convention.append(system.conventions[convention].draw());
         if (isActive)
             $convention.addClass("active");
         $col.append($convention);
@@ -135,7 +134,7 @@ class TreeView {
         }
         else {
             for (let i = 0; i < auction.length - 1; ++i) {
-                if (auction.get(i).children.indexOf(bid) !== -1) {
+                if (auction.get(i).getChildren().indexOf(bid) !== -1) {
                     auction.eraseFrom(i + 1);
                     break;
                 }
@@ -148,9 +147,38 @@ class TreeView {
     onClickConvention(convention) {
         auction.clear();
         auction.convention = convention;
-        auction.push(system.conventions[convention]);
+        let cbid = new Bid(convention, null, { "convention": convention });
+        auction.push(cbid);
         update();
     }
+
+    onNewConvention() {
+        let modal = new Modal("Create a Convention");
+        let $div = $("<div>");
+        let $name = $("<input>", { "type": "text", "placeholder": "Name" });
+        let $add = $("<button>", { "class": "yes", "html": "Add" });
+        let $cancel = $("<button>", { "class": "cancel", "html": "Cancel" });
+        $add.click(function () {
+            let name = $name.val().trim();
+            if (name === "") {
+                $name.css("background-color", "#faa");
+            }
+            else {
+                system.conventions[name] = []
+                modal.close();
+                update();
+            }
+        });
+        $cancel.click(function () { modal.close(); });
+        $name.keyup(function (event) {
+            if (event.which === 13)
+                $add.click();
+        });
+        $name.focus();
+        $div.append($name);
+        modal.append($div).append($cancel).append($add).open();
+        $cancel.focus();
+	}
 
     update() {
         this.$mainParent.empty();
@@ -164,21 +192,25 @@ class TreeView {
             $col.addClass("conventions");
             for (const convention in system.conventions) {
                 this.addConvention(convention, $col, auction.bids[0] === system.conventions[convention]);
-			}
+            }
+            let $newConvention = $("<li>", { "class": "convention new-convention selectable" });
+            $newConvention.append($("<div>", { "class": "name", "html": "+" }));
+            $newConvention.click(() => { this.onNewConvention(); });
+            $col.append($newConvention);
         }
 
         for (let i = 0; i < auction.length; ++i) {
             let $col = this.addColumn();
             if (i % 2 === 0)
                 $col.addClass("opps");
-            let children = auction.get(i).children;
+            let children = auction.get(i).getChildren();
             if (children.length === 0) {
                 $col.append("<div>", { "class": "bid bid-empty" });
             }
             else if (children.length === 1 && children[0].name === "pass") {
                 $col.removeClass("opps");
                 $col.addClass("bid bid-pass selectable");
-                if (auction.get(i).children[0].description.alertable)
+                if (auction.get(i).getChildren()[0].description.alertable)
                     $col.addClass("alertable");
                 if (auction.get(i + 1) === children[0])
                     $col.addClass("active");

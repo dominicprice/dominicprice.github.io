@@ -32,7 +32,6 @@ class InfoView {
 		this.$movedown = $("#curbid-movedown");
 		this.$rename = $("#curbid-rename");
 		this.$delete = $("#curbid-delete");
-		this.$convention = $("#curbid-make-convention");
 
 		this.$alertable.unbind().change(this.onAlertable.bind(this));
 		this.$minHCP.unbind().change(this.onMinHCP.bind(this));
@@ -42,7 +41,6 @@ class InfoView {
 		this.$movedown.unbind().click(this.onMoveDown.bind(this));
 		this.$rename.unbind().click(this.onRename.bind(this));
 		this.$delete.unbind().click(this.onDelete.bind(this));
-		this.$convention.unbind().click(this.onMakeConvention.bind(this));
 	}
 
 	onAlertable() {
@@ -118,22 +116,16 @@ class InfoView {
 		let $yes = $("<button>", { "class": "no", "html": "Delete" });
 		let $no = $("<button>", { "html": "Cancel" });
 		$yes.click(function () {
-			function deleteRecursive(bid, par) {
-				for (let i = par.children.length - 1; i >= 0; --i) {
-					if (par.children[i] === bid)
-						par.children.splice(i, 1);
-					else
-						deleteRecursive(bid, par.children[i]);
+			let convention = auction.last.convention;
+			function deleteRecursive(bid) {
+				if (bid.convention === convention) 
+					bid.convention = null;
+				for (const child of bid.children) {
+					deleteRecursive(child);
 				}
 			}
-			let toDelete = auction.last;
-			for (let i = system.openings.length - 1; i >= 0; --i) {
-				deleteRecursive(toDelete, system.openings[i]);
-				if (toDelete === system.openings[i])
-					system.openings.splice(i, 1);
-			}
-			delete system.conventions[auction.convention];
-			auction.convention = null;
+			delete system.conventions[convention];
+
 			auction.clear();
 			modal.close();
 			update();
@@ -156,8 +148,8 @@ class InfoView {
 				system.openings.splice(pos, 1);
 			}
 			else {
-				let pos = auction.last.children.indexOf(toDelete);
-				auction.last.children.splice(pos, 1);
+				let pos = auction.last.getChildren().indexOf(toDelete);
+				auction.last.getChildren().splice(pos, 1);
 			}
 			modal.close();
 			update();
@@ -174,7 +166,7 @@ class InfoView {
 			return;
 		let l = system.openings;
 		if (auction.bids.length > 1)
-			l = auction.bids[auction.bids.length - 2].children;
+			l = auction.bids[auction.bids.length - 2].getChildren();
 		let pos = l.indexOf(auction.bids[auction.bids.length - 1]);
 		if (pos === 0)
 			return;
@@ -189,7 +181,7 @@ class InfoView {
 			return;
 		let l = system.openings;
 		if (auction.bids.length > 1)
-			l = auction.bids[auction.bids.length - 2].children;
+			l = auction.bids[auction.bids.length - 2].getChildren();
 		let pos = l.indexOf(auction.bids[auction.bids.length - 1]);
 		if (pos === l.length - 1)
 			return;
@@ -197,35 +189,6 @@ class InfoView {
 		l[pos] = l[pos + 1];
 		l[pos + 1] = tmp;
 		update();
-	}
-
-	onMakeConvention() {
-		let modal = new Modal("Create a Convention");
-		let $div = $("<div>");
-		let $name = $("<input>", { "type": "text", "placeholder": "Name" });
-		let $add = $("<button>", { "class": "yes", "html": "Add" });
-		let $cancel = $("<button>", { "class": "cancel", "html": "Cancel" });
-		$add.click(function () {
-			let name = $name.val().trim();
-			if (name === "") {
-				$name.css("background-color", "#faa");
-			}
-			else {
-				auction.last.convention = name;
-				system.conventions[name] = auction.last;
-				modal.close();
-				update();
-			}
-		});
-		$cancel.click(function () { modal.close(); });
-		$name.keyup(function (event) {
-			if (event.which === 13)
-				$add.click();
-		});
-		$name.focus();
-		$div.append($name);
-		modal.append($div).append($cancel).append($add).open();
-		$cancel.focus();
 	}
 
 	update() {
@@ -257,8 +220,6 @@ class InfoView {
 					.prop("disabled", true);
 				this.$delete
 					.prop("disabled", true);
-				this.$convention
-					.prop("disabled", true);
 			}
 			else {
 				auction.last.draw(false, this.$bid);
@@ -283,8 +244,6 @@ class InfoView {
 					.prop("disabled", false);
 				this.$delete
 					.prop("disabled", false);
-				this.$convention
-					.prop("disabled", auction.last.convention !== null);
 			}
 	}
 }

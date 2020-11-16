@@ -11,7 +11,6 @@ function replaceSuitSymbols(s) {
 
 class Bid {
     constructor(name, parent = null, opts = {}) {
-        this.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         this.name = name;
         this.convention = null;
         this.description = {
@@ -21,10 +20,9 @@ class Bid {
             "maxHCP": null
         };
         this.children = [];
-        this.parent = parent;
-        if (parent !== null) {
-            parent.children.push(this);
-        }
+        console.log("Creating new bid", name, "for", parent);
+        if (parent !== null)
+            parent.getChildren().push(this);
 
         for (const [key, value] of Object.entries(opts)) {
             if (key === "description") {
@@ -42,26 +40,51 @@ class Bid {
         }
     }
 
+    getChildren() {
+        if (this.convention === null)
+            return this.children;
+        console.log(this.convention, system.conventions, system.conventions[this.convention]);
+        return system.conventions[this.convention];
+	}
+
+    getHistory() {
+        // Check if opening bid
+        for (const bid of system.openings) {
+            if (this === bid)
+                return [];
+        }
+
+        let history = []
+        for (const bid of auction.bids) {
+            if (this === bid)
+                return history;
+            history.push(bid);
+            for (const child of bid.getChildren()) {
+                if (this === child) {
+                    return history;
+				}
+			}
+        }
+
+        throw "Could not determine history"
+	}
+
     getMinHCP() {
-        let cur = this;
-        let depth = 0;
-        while (cur) {
-            if (depth % 4 === 0 && cur.description.minHCP !== null)
-                return cur.description.minHCP;
-            cur = cur.parent;
-            ++depth;
+        let history = this.getHistory().reverse();
+        history.unshift(this);
+        for (let i = 0; i < history.length; i += 4) {
+            if (history[i].description.minHCP != null)
+                return history[i].description.minHCP;
         }
         return 0;
     }
 
     getMaxHCP() {
-        let cur = this;
-        let depth = 0;
-        while (cur) {
-            if (depth % 4 === 0 && cur.description.maxHCP !== null)
-                return cur.description.maxHCP;
-            cur = cur.parent;
-            ++depth;
+        let history = this.getHistory().reverse();
+        history.unshift(this);
+        for (let i = 0; i < history.length; i += 4) {
+            if (history[i].description.maxHCP != null)
+                return history[i].description.maxHCP;
         }
         return 37;
     }
