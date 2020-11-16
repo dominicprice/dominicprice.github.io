@@ -95,6 +95,7 @@ function update() {
 }
 
 function initialLoad(data) {
+	console.log(data);
 	if (data)
 		system.load(data);
 	$("#header-name").value = system.info.name;
