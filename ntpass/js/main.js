@@ -126,8 +126,10 @@ function initSystem() {
 		$.ajax({
 			"url": `systems/${sysName}.json`,
 			"cache": false,
-			"error": onAjaxError
-		}).done(function (data) { initialLoad(data); });
+			"error": onAjaxError,
+			"success": initialLoad,
+			"dataType": "text"
+		});
 	}
 	
 }
