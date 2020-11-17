@@ -91,22 +91,30 @@ function update() {
 	tree.update();
 	info.update();
 	correctOverflow(".bid-custom");
-	localStorage.setItem("system", system.serialize());
+	//localStorage.setItem("system", system.serialize());
 }
 
-function initialLoad(data) {
-	console.log(data);
-	if (data)
-		system.load(data);
+function updateHeader() {
 	$("#header-name").value = system.info.name;
 	$("#header-partnera").value = system.info.partnerA;
 	$("#header-partnerb").value = system.info.partnerB;
-	$("#header-overview").value = system.info.overview;
+	$("#header-overview").value = system.info.overview;	
+}
+
+function initialLoad(data) {
+	if (data)
+		system.load(data);
 	update();
 }
 
 function onAjaxError(a, b, c) {
-	console.log(a, b, c);
+	let $modal = new Modal("Failed to load system!");
+	$modal.append(`<div><h2>Failed to load system</h2><p>readyState: ${a.readyState}</p><p>status: ${a.status}</p><p>statusText: ${a.statusText}</p></div>`);
+	let $cancel = $("<button>", { "class": "no", "html": "Ok" });
+	$cancel.click(function () {
+		$modal.close();
+	});
+	$modal.append($cancel).open();
 }
 
 function initSystem() {
@@ -117,19 +125,15 @@ function initSystem() {
 	info = new InfoView();
 	menu = new Menu();
 	
-	// Check for GET parameterName
+	// Load system if provided
 	let sysName = findGetParameter("system");
-	if (sysName === null)
-		initialLoad(localStorage.getItem("system"));
-	else {
-		console.log(sysName);
+	if (sysName !== null) {
 		$.ajax({
 			"url": `systems/${sysName}.json`,
 			"cache": false,
 			"error": onAjaxError,
-			"success": initialLoad,
+			"success": function (data) { system.load(data); },
 			"dataType": "text"
 		});
 	}
-	
 }

@@ -19,31 +19,23 @@ class System {
 	}
 
 	load(s) {
-		let obj = JSON.parse(s, (key, value) => {
+		// Typecast plain objects to Bid objects
+		let reviver = (key, value) => {
 			if (typeof value === "object" && value !== null && value["description"] !== undefined)
 				return Object.assign(new Bid, value);
-			return value;
-		});
-
+			return value;			
+		}
+		
+		let obj = JSON.parse(s, reviver);
 		this.info = obj.info;
 		this.openings = obj.openings;
 		this.conventions = obj.conventions;
+		
+		update();
+		updateHeader();
 	}
 
 	serialize() {
-		function replacer(key, value) {
-			// Remove all references to parent to remove circular references
-			//if (key === "parent")
-			//	return undefined;
-			// Replace all references to conventions with the convention name
-			// if (key === "children" || key === "openings") {
-				// let saneChildren = []
-				// for (let i = 0; i < value.length; ++i)
-					// saneChildren.push(value[i].convention === null ? value[i] : value[i].convention);
-				// return saneChildren;
-			// }
-			return value;
-		}
-		return JSON.stringify(this, replacer);
+		return JSON.stringify(this);
 	}
 }

@@ -45,12 +45,13 @@ class Auction {
 
     get currentLevel() {
         for (let i = this.bids.length - 1; i >= 0; --i) {
-            if (typeof this.bids[i].name === "string")
+            let name = this.bids[i].resolveName();
+            if (typeof name === "string")
                 continue;
-            if (this.bids[i].name.hasOwnProperty("denom"))
-                return this.bids[i].name;
+            if (name.hasOwnProperty("denom"))
+                return name;
             else
-                return this.bids[i].name.to;
+                return name.to;
         }
         return { "denom": "clubs", "level": 0 };
     }

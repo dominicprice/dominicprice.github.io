@@ -32,6 +32,7 @@ class InfoView {
 		this.$movedown = $("#curbid-movedown");
 		this.$rename = $("#curbid-rename");
 		this.$delete = $("#curbid-delete");
+		this.$assignConvention = $("#curbid-assign-convention");
 
 		this.$alertable.unbind().change(this.onAlertable.bind(this));
 		this.$minHCP.unbind().change(this.onMinHCP.bind(this));
@@ -41,6 +42,7 @@ class InfoView {
 		this.$movedown.unbind().click(this.onMoveDown.bind(this));
 		this.$rename.unbind().click(this.onRename.bind(this));
 		this.$delete.unbind().click(this.onDelete.bind(this));
+		this.$assignConvention.unbind().click(this.onAssignConvention.bind(this));
 	}
 
 	onAlertable() {
@@ -86,21 +88,62 @@ class InfoView {
 	}
 
 	onRename() {
-		let modal = new Modal("Rename bid");
-		let $name = $("<input>", { "type": "text" });
-		let $btn = $("<button>", { "html": "Rename" });
-		$btn.click(function () {
-			auction.last.name = $name.val();
-			modal.close();
-			update();
-		});
-		$name.keyup(function (event) {
-			if (event.which === 13)
-				$btn.click();
-		});
-		modal.append($name).append($btn);
-		modal.open();
-		$name.focus();
+		$("body").append(biddingBox.$dimmer);
+		biddingBox.renameMode = true;
+		biddingBox.$bids.prop("disabled", false);
+	}
+
+	onRenameOld() {
+		if (auction.mode === Mode.Conventions && auction.length === 1) {
+			let modal = new Modal("Rename convention");
+			let $name = $("<input>", { "type": "text" });
+			let $btn = $("<button>", { "html": "Rename" });
+			$btn.click(function () {
+				let oldName = auction.convention;
+				let newName = $name.val();
+				function renameRecursive(bid) {
+					if (bid.convention === oldName)
+						bid.convention = newName;
+					for (const child of bid.children)
+						renameRecursive(child);
+				}
+				for (const opening of system.openings)
+					renameRecursive(opening);
+				for (const [key, value] of Object.entries(system.conventions)) {
+					for (const child of value)
+						renameRecursive(child);
+				}
+				auction.clear();
+				system.conventions[newName] = system.conventions[oldName];
+				delete system.conventions[oldName];
+				modal.close();
+				update();
+			});
+			$name.keyup(function (event) {
+				if (event.which === 13)
+					$btn.click();
+			});
+			modal.append($name).append($btn);
+			modal.open();
+			$name.focus();
+		}
+		else {
+			let modal = new Modal("Rename bid");
+			let $name = $("<input>", { "type": "text" });
+			let $btn = $("<button>", { "html": "Rename" });
+			$btn.click(function () {
+				auction.last.name = $name.val();
+				modal.close();
+				update();
+			});
+			$name.keyup(function (event) {
+				if (event.which === 13)
+					$btn.click();
+			});
+			modal.append($name).append($btn);
+			modal.open();
+			$name.focus();
+		}
 	}
 
 	onDelete() {
@@ -191,6 +234,41 @@ class InfoView {
 		update();
 	}
 
+	onAssignConvention() {
+		if (auction.last.convention !== null || auction.last.children.length != 0) {
+			let modal;
+			if (auction.last.convention !== null)
+				modal = new Modal(`This bid already has the convention ${auction.last.convention} assigned to it, continue?`);
+			else
+				modal = new Modal("This bid already has continuations which will be deleted if you assign a convention to it. Continue?");
+			let $no = $("<button>", { "class": "yes", "html": "No" });
+			let $yes = $("<button>", { "class": "no", "html": "Yes" });
+			$no.click(function () { modal.close(); });
+			$yes.click(() => { modal.close(); this.onSelectConvention(); });
+			modal.append($no).append($yes).open();
+		}
+		else {
+			this.onSelectConvention();
+		}
+	}
+
+	onSelectConvention() {
+		let modal = new Modal("Choose convention");
+		let $ul = $("<ul>", { "class": "select" });
+		for (const convention in system.conventions) {
+			let $li = $("<li>", { "html": convention });
+			$li.click(function () {
+				auction.last.convention = convention;
+				auction.last.children = [];
+				modal.close();
+				update();
+			});
+			$ul.append($li);
+		}
+		modal.append($ul);
+		modal.open();
+	}
+
 	update() {
 			if (auction.length === 0 || auction.last.name === "Skip") {
 				this.$bid
@@ -220,6 +298,8 @@ class InfoView {
 					.prop("disabled", true);
 				this.$delete
 					.prop("disabled", true);
+				this.$assignConvention
+					.prop("disabled", true);
 			}
 			else {
 				auction.last.draw(false, this.$bid);
@@ -244,6 +324,8 @@ class InfoView {
 					.prop("disabled", false);
 				this.$delete
 					.prop("disabled", false);
+				this.$assignConvention
+					.prop("disabled", Object.keys(system.conventions).length === 0 || (Auction.mode === Mode.Conventions && auction.length < 2));
 			}
 	}
 }

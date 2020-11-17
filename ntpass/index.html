@@ -93,7 +93,7 @@
 					<button class="bid bid-up" data-name="up" disabled></button>
 
 					<button class="bid bid-custom" data-name="custom" disabled>Custom</button>
-					<button class="bid bid-convention" data-name="convention" disabled>Convention</button>
+					<button class="bid bid-step" data-name="step" disabled>Step</button>
 				</div>
 			</div>
 
@@ -133,9 +133,9 @@
 						<label for="curbid-alertable">Alertable</label>
 					</div>
 					<div>
-						<input type="number" style="width: 30px" id="curbid-minhcp" disabled>
+						<input type="number" style="width: 30px" id="curbid-minhcp" min="0" max="37 "disabled>
 						&mdash;
-						<input type="number" style="width: 30px" id="curbid-maxhcp" disabled>
+						<input type="number" style="width: 30px" id="curbid-maxhcp" min="0" max="37" disabled>
 						HCP
 					</div>
 				</div>
@@ -150,7 +150,7 @@
 						<button id="curbid-delete" disabled>Delete</button>
 					</div>
 					<div>
-						<button id="curbid-make-convention" disabled>Add to Conventions</button>
+						<button id="curbid-assign-convention" disabled>Assign Convention</button>
 					</div>
 				</div>
 

@@ -9,6 +9,23 @@ function replaceSuitSymbols(s) {
 		.replace(/![sS]/g, "&spades;");
 }
 
+function incrementBid(bid, k) {
+    bid = {
+        denom: bid.denom,
+        level: bid.level
+    };
+    for (let i = 0; i < k; ++i) {
+        switch (bid.denom) {
+            case "clubs": bid.denom = "diams"; break;
+            case "diams": bid.denom = "hearts"; break;
+            case "hearts": bid.denom = "spades"; break;
+            case "spades": bid.denom = "nt"; break;
+            case "nt": bid.denom = "clubs"; ++bid.level; break;
+		}
+    }
+    return bid;
+}
+
 class Bid {
     constructor(name, parent = null, opts = {}) {
         this.name = name;
@@ -20,7 +37,6 @@ class Bid {
             "maxHCP": null
         };
         this.children = [];
-        console.log("Creating new bid", name, "for", parent);
         if (parent !== null)
             parent.getChildren().push(this);
 
@@ -43,7 +59,6 @@ class Bid {
     getChildren() {
         if (this.convention === null)
             return this.children;
-        console.log(this.convention, system.conventions, system.conventions[this.convention]);
         return system.conventions[this.convention];
 	}
 
@@ -69,7 +84,7 @@ class Bid {
         throw "Could not determine history"
 	}
 
-    getMinHCP() {
+    resolveMinHCP() {
         let history = this.getHistory().reverse();
         history.unshift(this);
         for (let i = 0; i < history.length; i += 4) {
@@ -79,7 +94,7 @@ class Bid {
         return 0;
     }
 
-    getMaxHCP() {
+    resolveMaxHCP() {
         let history = this.getHistory().reverse();
         history.unshift(this);
         for (let i = 0; i < history.length; i += 4) {
@@ -89,28 +104,59 @@ class Bid {
         return 37;
     }
 
+    resolveName() {
+        if (typeof this.name === "number") {
+            // Get 
+            let history = this.getHistory();
+            for (let i = history.length - 1; i >= 0; --i) {
+                let hName = history[i].resolveName();
+                if (typeof hName === "string") {
+                    if (hName.match(/^(pass|double|redouble)$/))
+                        continue;
+                    else
+                        return `${this.name} Step${this.name === 1 ? '' : 's'}`;
+                }
+                else if (hName.hasOwnProperty("denom")) {
+                    return incrementBid(hName, this.name);
+                }
+                else {
+                    console.log(history[i], hName);
+                    return {
+                        "from": incrementBid(hName.from, this.name),
+                        "to": incrementBid(hName.to, this.name)
+					}
+				}
+            }
+            return incrementBid({ "denom": "nt", "level": 0 }, this.name);
+        }
+        else {
+            return this.name;
+		}
+	}
+
     draw(addTooltip = false, $elem = null) {
         if ($elem === null)
             $elem = $("<div>", { "class": "bid" });
         else
             $elem.removeClass().html("").css("fontSize", "").addClass("bid");
 
-        if (typeof this.name === "string") {
-            if (this.name.match(/^(pass|double|redouble)$/)) {
-                $elem.addClass("bid-" + this.name)
+        let name = this.resolveName();
+        if (typeof name === "string") {
+            if (name.match(/^(pass|double|redouble)$/)) {
+                $elem.addClass("bid-" + name)
             }
             else {
                 $elem.addClass("bid-custom");
-                $elem.html(replaceSuitSymbols(this.name));
+                $elem.html(replaceSuitSymbols(name));
             }
         }
         else {
-            if (this.name.hasOwnProperty("denom")) {
-                $elem.addClass(`bid-${this.name.denom} bid-level${this.name.level}`);
+            if (name.hasOwnProperty("denom")) {
+                $elem.addClass(`bid-${name.denom} bid-level${name.level}`);
             }
             else {
-                let $from = $("<span>", { "class": `bid bid-multi bid-${this.name.from.denom} bid-level${this.name.from.level}` });
-                let $to = $("<span>", { "class": `bid bid-multi bid-${this.name.to.denom} bid-level${this.name.to.level}` });
+                let $from = $("<span>", { "class": `bid bid-multi bid-${name.from.denom} bid-level${name.from.level}` });
+                let $to = $("<span>", { "class": `bid bid-multi bid-${name.to.denom} bid-level${name.to.level}` });
                 $elem.append($from).append("-").append($to);
             }
         }
@@ -127,7 +173,7 @@ class Bid {
             }
             // Add HCP range
             let $hcpRange = $("<div>", { "class": "hcprange" });
-            let [minHCP, maxHCP] = [this.getMinHCP(), this.getMaxHCP()];
+            let [minHCP, maxHCP] = [this.resolveMinHCP(), this.resolveMaxHCP()];
             if (minHCP === 0) {
                 if (maxHCP !== 37)
                     $hcpRange.html(`&le;${maxHCP} HCP`).appendTo($tooltip);

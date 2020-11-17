@@ -3,6 +3,8 @@ class BiddingBox {
 		this.$parent = $("#bidding-box");
 		this.$bids = this.$parent.children();
 		this.$selectedBid = null;
+		this.renameMode = false;
+		this.$dimmer = $("<div>", { "class": "underlay" });;
 
 		this.$bids.filter("[data-denom]")
 			.prop("disabled", false)
@@ -61,19 +63,34 @@ class BiddingBox {
 			name = name.target.getAttribute("data-name");
 
 		if (name === "up") {
-			auction.bids.pop();
-			update();
+			if (this.renameMode) {
+				this.renameMode = false;
+				this.$dimmer.remove();
+				update();
+			}
+			else {
+				auction.bids.pop();
+				update();
+			}
 		}
 		else if (name === "custom") {
 			let modal = new Modal("Name of custom bid");
 			let $input = $("<input>", { "type": "text"});
 			let $submit = $("<button>", { "html": "Add" });
 			$submit.click(function () {
-				let bid = new Bid($input.val(), auction.last);
-				if (auction.last === null)
-					system.openings.push(bid);
-				modal.close();
-				update();
+				if (this.renameMode) {
+					auction.last.name = $input.val();
+					this.renameMode = false;
+					this.$dimmer.remove();
+					update();
+				}
+				else {
+					let bid = new Bid($input.val(), auction.last);
+					if (auction.last === null)
+						system.openings.push(bid);
+					modal.close();
+					update();
+				}
 			});
 			$input.keyup(function (event) {
 				if (event.keyCode === 13)
@@ -82,49 +99,51 @@ class BiddingBox {
 			modal.append($input).append($submit);
 			$input.focus();
 			modal.open();
-
 		}
-		else if (name === "convention") {
-			if (auction.last.convention !== null || auction.last.children.length != 0) {
-				let modal;
-				if (auction.last.convention !== null)
-					modal = new Modal(`This bid already has the convention ${auction.last.convention} assigned to it, continue?`);
-				else
-					modal = new Modal("This bid already has continuations which will be deleted if you assign a convention to it. Continue?");
-				let $no = $("<button>", { "class": "yes", "html": "No" });
-				let $yes = $("<button>", { "class": "no", "html": "Yes" });
-				$no.click(function () { modal.close(); });
-				$yes.click(function () { this.onSelectConvention(); });
-				modal.append($no).append($yes).open();
-			}
-			else {
-				this.onSelectConvention();
-			}
+		else if (name === "step") {
+			let modal = new Modal("Number of steps");
+			let $input = $("<input>", { "type": "number", "min": "0", "max": "35" });
+			let $submit = $("<button>", { "html": "Add" });
+			$submit.click(function () {
+				if (this.renameMode) {
+					auction.last.name = parseInt($input.val());
+					this.renameMode = false;
+					this.$dimmer.remove();
+					update();
+				}
+				else {
+					let bid = new Bid(parseInt($input.val()), auction.last);
+					if (auction.last === null)
+						system.openings.push(bid);
+					modal.close();
+					update();
+				}
+			});
+			$input.keyup(function (event) {
+				if (event.keyCode === 13)
+					$submit.click();
+			});
+			modal.append($input).append($submit);
+			$input.focus();
+			modal.open();
 		}
 		else {
-			let bid = new Bid(name, auction.last);
-			if (auction.last === null)
-				system.openings.push(bid);
-			update();
+			if (this.renameMode) {
+				auction.last.name = name;
+				this.renameMode = false;
+				this.$dimmer.remove();
+				update();
+			}
+			else {
+				let bid = new Bid(name, auction.last);
+				if (auction.last === null)
+					system.openings.push(bid);
+				update();
+			}
 		}
 	}
 
-	onSelectConvention() {
-		let modal = new Modal("Choose convention");
-		let $ul = $("<ul>", { "class": "select" });
-		for (const convention in system.conventions) {
-			let $li = $("<li>", { "html": convention });
-			$li.click(function () {
-				auction.last.convention = convention;
-				auction.last.children = [];
-				modal.close();
-				update();
-			});
-			$ul.append($li);
-		}
-		modal.append($ul);
-		modal.open();
-	}
+
 
 	update() {
 		if (auction.mode === Mode.Conventions && auction.length === 0) {
@@ -144,28 +163,26 @@ class BiddingBox {
 		let alreadyBid = system.openings;
 		if (auction.last !== null)
 			alreadyBid = auction.last.getChildren();
-		console.log(typeof alreadyBid, alreadyBid)
 		for (const bid of alreadyBid) {
-			if (typeof bid.name === "string")
+			let name = bid.resolveName();
+			if (typeof name === "string")
 				continue;
-			if (bid.name.hasOwnProperty("denom")) {
+			if (name.hasOwnProperty("denom")) {
 				this.$bids
-					.filter(`[data-denom="${bid.name.denom}"][data-level="${bid.name.level}"]`)
+					.filter(`[data-denom="${name.denom}"][data-level="${name.level}"]`)
 					.prop("disabled", true);
 			}
 			else {
 				this.$bids.filter(function () {
-					let name = bidNameFromElem(this);
-					if (typeof name !== "object")
+					let nameComp = bidNameFromElem(this);
+					if (typeof nameComp !== "object")
 						return false;
-					return compareDenomAndLevel(bid.name.from, name) <= 0 && compareDenomAndLevel(bid.name.to, name) >= 0;
+					return compareDenomAndLevel(name.from, nameComp) <= 0 && compareDenomAndLevel(name.to, nameComp) >= 0;
 				}).prop("disabled", true);
 			}
 		}
 		// Disable "up" button if auction is empty
 		this.$bids.filter(`[data-name="up"]`).prop("disabled", auction.length === 0);
-		// Disable "convention" button if there are no conventions
-		this.$bids.filter(`[data-name="convention"]`).prop("disabled", Object.keys(system.conventions).length === 0);
 	}
 }
 

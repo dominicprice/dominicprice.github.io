@@ -26,7 +26,6 @@ class Menu {
 	}
 
 	onOpen() {
-		console.log("Click on_open");
 		this.confirmDialog(
 			"Discard changes?",
 			"Are you sure you want to continue and discard any unsaved changes?",
