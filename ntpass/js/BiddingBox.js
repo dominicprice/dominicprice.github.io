@@ -66,6 +66,7 @@ class BiddingBox {
 			if (this.renameMode) {
 				this.renameMode = false;
 				this.$dimmer.remove();
+				biddingBox.$parent.removeClass("renaming");
 				update();
 			}
 			else {
@@ -75,56 +76,44 @@ class BiddingBox {
 		}
 		else if (name === "custom") {
 			let modal = new Modal("Name of custom bid");
-			let $input = $("<input>", { "type": "text"});
-			let $submit = $("<button>", { "html": "Add" });
-			$submit.click(function () {
-				if (this.renameMode) {
-					auction.last.name = $input.val();
-					this.renameMode = false;
-					this.$dimmer.remove();
+			modal.appendInputWithButton("Add", "green", function (val) {
+				if (biddingBox.renameMode) {
+					auction.last.name = val;
+					biddingBox.renameMode = false;
+					biddingBox.$dimmer.remove();
+					biddingBox.$parent.removeClass("renaming");
+					modal.close();
 					update();
 				}
 				else {
-					let bid = new Bid($input.val(), auction.last);
+					let bid = new Bid(val, auction.last);
 					if (auction.last === null)
 						system.openings.push(bid);
 					modal.close();
 					update();
 				}
-			});
-			$input.keyup(function (event) {
-				if (event.keyCode === 13)
-					$submit.click();
-			});
-			modal.append($input).append($submit);
-			$input.focus();
+			})
 			modal.open();
 		}
 		else if (name === "step") {
 			let modal = new Modal("Number of steps");
-			let $input = $("<input>", { "type": "number", "min": "0", "max": "35" });
-			let $submit = $("<button>", { "html": "Add" });
-			$submit.click(function () {
-				if (this.renameMode) {
-					auction.last.name = parseInt($input.val());
-					this.renameMode = false;
-					this.$dimmer.remove();
+			modal.appendInputWithButton("Add", "green", function (val) {
+				if (biddingBox.renameMode) {
+					auction.last.name = parseInt(val);
+					biddingBox.renameMode = false;
+					biddingBox.$dimmer.remove();
+					biddingBox.$parent.removeClass("renaming");
+					modal.close();
 					update();
 				}
 				else {
-					let bid = new Bid(parseInt($input.val()), auction.last);
+					let bid = new Bid(parseInt(val), auction.last);
 					if (auction.last === null)
 						system.openings.push(bid);
 					modal.close();
 					update();
 				}
-			});
-			$input.keyup(function (event) {
-				if (event.keyCode === 13)
-					$submit.click();
-			});
-			modal.append($input).append($submit);
-			$input.focus();
+			}, { "type": "number", "min": "0", "max": "35" });
 			modal.open();
 		}
 		else {
@@ -132,6 +121,7 @@ class BiddingBox {
 				auction.last.name = name;
 				this.renameMode = false;
 				this.$dimmer.remove();
+				biddingBox.$parent.removeClass("renaming");
 				update();
 			}
 			else {

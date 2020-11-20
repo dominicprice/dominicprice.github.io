@@ -108,13 +108,12 @@ function initialLoad(data) {
 }
 
 function onAjaxError(a, b, c) {
-	let $modal = new Modal("Failed to load system!");
-	$modal.append(`<div><h2>Failed to load system</h2><p>readyState: ${a.readyState}</p><p>status: ${a.status}</p><p>statusText: ${a.statusText}</p></div>`);
-	let $cancel = $("<button>", { "class": "no", "html": "Ok" });
-	$cancel.click(function () {
-		$modal.close();
-	});
-	$modal.append($cancel).open();
+	let modal = new Modal("Failed to load system!");
+	modal.appendText(`readyState: ${a.readyState}`);
+	modal.appendText(`status: ${a.status}`);
+	modal.appendText(`statusText: ${a.statusText}`);
+	modal.appendButton("Ok", "grey", function () { modal.close(); });
+	modal.open();
 }
 
 function initSystem() {

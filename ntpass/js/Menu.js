@@ -44,9 +44,10 @@ class Menu {
 				update();
 			}
 			catch (err) {
-				let $modal = new Modal("Could not open system");
-				$modal.append($(`<div>${err}</div>`));
-				$modal.open();
+				let modal = new Modal("Could not open system!");
+				modal.appendText(`${err}`);
+				modal.appendButton("Ok", "grey", function () { modal.close(); });
+				modal.open();
 			}
 		});
 		reader.readAsText(files[0]);
@@ -77,12 +78,10 @@ class Menu {
 	}
 
 	confirmDialog(title, message, onConfirm) {
-		let $dialog = new Modal(title);
-		let $content = $("<div>", { "html": message });
-		let $yes = $("<button>", { "class": "no", "html": "Continue Anyway", "click": () => { $dialog.close(onConfirm); } });
-		let $no = $("<button>", { "html": "Cancel", "click": () => { $dialog.close(); } });
-		$dialog.append($content).append($no).append($yes);
-		$dialog.open();
-		$no.focus();
+		let modal = new Modal(title);
+		modal.appendText(message);
+		modal.appendButton("No", "grey", function () { modal.close(); });
+		modal.appendButton("Continue Anyway", "red", function () { modal.close(); onConfirm(); });
+		modal.open();
 	}
 }

@@ -1,175 +1,186 @@
-﻿/************
-* Modal Box *
-************/
+﻿/*********************
+* Background blocker *
+*********************/
 
 .modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.underlay {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    z-index: 3;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal .box {
-    background-color: white;
-    border: 1px solid black;
-    max-height: 80vh;
-    overflow: hidden;
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	transition: background-color 0.25s ease;
+	z-index: 9999;
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 
-.modal .header {
-    width: inherit;
-    height: 30px;
-    margin: -1px;
-    border-bottom: 1px solid black;
-    background-color: #ccc;
-    display: flex;
+/*********************
+*      Dialogue      *
+*********************/
+
+.modal .content-wrapper {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	max-width: 40%;
+	background-color: white;
+	border-radius: 5px;
+	box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+	transition: transform 0.25s;
+	transition-delay: 0.15s;
 }
 
-.modal .header .title {
-    flex: 1;
-    margin-left: 5px;
-    font-weight: bold;
-    line-height: 30px;
+.modal .content-wrapper button {
+	box-sizing: border-box;
+	outline: none;
+	cursor: pointer;
 }
 
-.modal .header .close {
-    color: black;
-    float: right;
-    font-size: 30px;
-    cursor: pointer;
-    line-height: 30px;
-    height: 30px;
-    width: 30px;
-    background-color: #c44;
-    font-weight: bold;
-    border-left: 1px solid black;
-    text-align: center;
-    user-select: none;
+.modal .content-wrapper header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 48px;
+	background-color: #ccc;
+	border-radius: 5px 5px 0 0;
 }
 
-.modal .header .close::after {
-    content: "×";
+.modal .content-wrapper header h2 {
+	margin: 5px;
+	padding: 0px 5px;
 }
 
-.modal .header .close:active {
-    background-color: #922;
+.modal .content-wrapper .close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border: none;
+	background-color: transparent;
+	font-size: 24px;
+	transition: 0.25s linear;
+}
+
+.modal .content-wrapper .close:before, .modal .content-wrapper .close:after {
+	position: absolute;
+	content: '';
+	width: 20px;
+	height: 2px;
+	background-color: black;
+}
+
+.modal .content-wrapper .close:before {
+	transform: rotate(-45deg);
+}
+
+.modal .content-wrapper .close:after {
+	transform: rotate(45deg);
+}
+
+.modal .content-wrapper .close:hover:before, .modal .content-wrapper .close:hover:after {
+	background-color: tomato;
+}
+
+.modal .content-wrapper main {
+	position: relative;
+	margin: 42px 16px 16px 16px;
+}
+
+.modal .content-wrapper main p {
+	margin-top: 16px;
+}
+
+.modal .content-wrapper main .button-box {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 16px;
+}
+
+.modal .content-wrapper main button {
+	position: relative;
+	margin-left: 10px;
+	padding: 10px 20px;
+	border: none;
+	background-color: slategray;
+	border-radius: 4px;
+	color: white;
+	font-size: 13px;
+	font-weight: 300;
+	overflow: hidden;
+	z-index: 1;
+}
+
+.modal .content-wrapper main button:before {
+	position: absolute;
+	content: '';
+	top: 0;
+	left: 0;
+	width: 0%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.2);
+	transition: width 0.25s;
+	z-index: 0;
+}
+
+.modal .content-wrapper main button.green {
+	background-color: #2ecc71;
+}
+
+.modal .content-wrapper main button.red {
+	background-color: #e74c3c;
+}
+
+.modal .content-wrapper main button.grey {
+	background-color: #a1a1a1;
+}
+
+.modal .content-wrapper main button:hover:before {
+	width: 100%;
+}
+
+.modal .content-wrapper main .input-box {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 16px;
 }
 
 
-.modal .main {
-    padding: 5px;
-    margin-top: -2px;
-    text-align: center;
-    overflow-y: auto;
-    width: 300px;
-    overflow-x: hidden;
-    max-height: calc(80vh - 30px);
+.modal .content-wrapper main input {
+	font-size: 13px;
+	padding: 10px 10px;
+	outline: none;
+	border: 1px solid #aaa;
+	border-right: none;
+	border-radius: 4px 0px 0px 4px;
+}
+.modal .content-wrapper main input+button {
+	margin-left: 0;
+	border-radius: 0 4px 4px 0;
+	border: 1px solid #aaa;
 }
 
-
-/*****************
-* Modal Elements *
-*****************/
-
-.modal input {
-    width: 200px;
-    height: 35px;
-    border: 1px solid black;
-    border-radius: 0px;
-    font-family: inherit;
-    padding-left: 5px;
-    box-sizing: border-box;
+.modal .content-wrapper main ul {
+	display: flex;
+	flex-direction: column;
 }
 
-.modal textarea {
-    width: 200px;
-    height: 100px;
-    border: 1px solid black;
-    resize: none;
-    font-family: inherit;
-    box-sizing: border-box;
+.modal .content-wrapper main li {
+	width: 100%;
+	padding: 5px 10px;
 }
 
-.modal input + textarea {
-    border-top: none;
-}
-
-.modal button {
-    height: 35px;
-    min-width: 50px;
-    border: 1px solid black;
-    font-family: inherit;
-    background-color: #eee;
-    box-sizing: border-box;
-    outline: none;
-}
-
-.modal button:active {
-    background-color: #ddd;
-}
-
-.modal input + button,
-.modal button + button {
-    border-left: 0px;
-}
-
-.modal button.yes {
-    background-color: green;
-    color: white;
-}
-
-.modal button.yes:active {
-    background-color: #040;
-    color: white;
-}
-
-.modal button.no {
-    background-color: red;
-    color: white;
-}
-
-.modal button.no:active {
-    background-color: #500;
-    color: white;
-}
-
-.modal ul.select {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.modal ul.select li {
-    cursor: pointer;
-    text-align: center;
-    width: 280px;
-    margin: auto;
-    background-color #eee;
-    padding: 5px;
-}
-
-.modal ul.select li:hover {
-    background-color: #ddd;
+.modal .content-wrapper main li:hover {
+	background-color: #eee;
 }

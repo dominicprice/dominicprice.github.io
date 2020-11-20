@@ -89,6 +89,7 @@ class InfoView {
 
 	onRename() {
 		$("body").append(biddingBox.$dimmer);
+		biddingBox.$parent.addClass("renaming");
 		biddingBox.renameMode = true;
 		biddingBox.$bids.prop("disabled", false);
 	}
@@ -96,9 +97,7 @@ class InfoView {
 	onRenameOld() {
 		if (auction.mode === Mode.Conventions && auction.length === 1) {
 			let modal = new Modal("Rename convention");
-			let $name = $("<input>", { "type": "text" });
-			let $btn = $("<button>", { "html": "Rename" });
-			$btn.click(function () {
+			modal.appendInputWithButton("Rename", "green", function (val) {
 				let oldName = auction.convention;
 				let newName = $name.val();
 				function renameRecursive(bid) {
@@ -119,30 +118,16 @@ class InfoView {
 				modal.close();
 				update();
 			});
-			$name.keyup(function (event) {
-				if (event.which === 13)
-					$btn.click();
-			});
-			modal.append($name).append($btn);
 			modal.open();
-			$name.focus();
 		}
 		else {
 			let modal = new Modal("Rename bid");
-			let $name = $("<input>", { "type": "text" });
-			let $btn = $("<button>", { "html": "Rename" });
-			$btn.click(function () {
-				auction.last.name = $name.val();
+			modal.appendInputWithButton("Rename", "green", function (val) {
+				auction.last.name = val;
 				modal.close();
 				update();
 			});
-			$name.keyup(function (event) {
-				if (event.which === 13)
-					$btn.click();
-			});
-			modal.append($name).append($btn);
 			modal.open();
-			$name.focus();
 		}
 	}
 
@@ -155,36 +140,32 @@ class InfoView {
 
 	onDeleteConvention() {
 		let modal = new Modal("Delete this convention?");
-		modal.append($("<div>", { "html": "Are you sure you want to delete this convention? All occurrences in your system will be removed." }));
-		let $yes = $("<button>", { "class": "no", "html": "Delete" });
-		let $no = $("<button>", { "html": "Cancel" });
-		$yes.click(function () {
+		modal.appendText("Are you sure you want to delete this convention? All occurrences in your system will be removed.");
+		modal.appendButton("Yes", "red", function () {
 			let convention = auction.last.convention;
 			function deleteRecursive(bid) {
-				if (bid.convention === convention) 
+				if (bid.convention === convention)
 					bid.convention = null;
 				for (const child of bid.children) {
 					deleteRecursive(child);
 				}
 			}
 			delete system.conventions[convention];
-
 			auction.clear();
 			modal.close();
 			update();
 		});
-		$no.click(function () {
+		modal.appendButton("No", "grey", function () {
 			modal.close();
-		});
-		modal.append($yes).append($no).open();
+		})
+		modal.open();
 	}
 
 	onDeleteBid() {
 		let modal = new Modal("Delete this bid?");
-		modal.append($("<div>", { "html": "Are you sure you want to delete this bid and off of its continuations?" }));
-		let $yes = $("<button>", { "class": "no", "html": "Delete" });
-		let $no = $("<button>", { "html": "Cancel" });
-		$yes.click(function () {
+		modal.appendText("Are you sure you want to delete this bid and all of its continuations?");
+		modal.appendButton("No", "grey", function () { modal.close(); });
+		modal.appendButton("Yes", "red", function () {
 			let toDelete = auction.pop();
 			if (auction.length === 0) {
 				let pos = system.openings.indexOf(toDelete);
@@ -197,11 +178,7 @@ class InfoView {
 			modal.close();
 			update();
 		});
-		$no.click(function () {
-			modal.close();
-		});
-		modal.append($no).append($yes).open();
-		$no.focus();
+		modal.open();
 	}
 
 	onMoveUp() {
@@ -241,11 +218,12 @@ class InfoView {
 				modal = new Modal(`This bid already has the convention ${auction.last.convention} assigned to it, continue?`);
 			else
 				modal = new Modal("This bid already has continuations which will be deleted if you assign a convention to it. Continue?");
-			let $no = $("<button>", { "class": "yes", "html": "No" });
-			let $yes = $("<button>", { "class": "no", "html": "Yes" });
-			$no.click(function () { modal.close(); });
-			$yes.click(() => { modal.close(); this.onSelectConvention(); });
-			modal.append($no).append($yes).open();
+			modal.appendButton("No", "grey", function () { modal.close(); });
+			modal.appendButton("Yes", "red", () => {
+				modal.close();
+				this.onSelectConvention();
+			});
+			modal.open();
 		}
 		else {
 			this.onSelectConvention();

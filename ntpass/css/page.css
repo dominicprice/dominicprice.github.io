@@ -27,6 +27,10 @@ main {
 	flex: 1;
 }
 
+button {
+	outline: none;
+}
+
 
 /***********
 * Menu Bar *
@@ -69,7 +73,7 @@ nav {
 
 #logo .bid {
 	line-height: 11px;
-	font-family: arial, sans-serif;
+	font-family: "Noto Sans", sans-serif;
 	font-size: 8px;
 	font-weight: normal;
 	transform: rotate(270deg);
