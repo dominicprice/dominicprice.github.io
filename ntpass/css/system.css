@@ -1,49 +1,3 @@
-/*********
-* Header *
-*********/
-
-#header-cell {
-	grid-area: h;
-	background-color: white;
-	display: grid;
-	grid-template-areas: "n n" "a b" "d d";
-	grid-template-columns: repeat(2, auto);
-	grid-template-rows: repeat(3, auto);
-	padding: 10px;
-	grid-gap: 10px;
-	border-bottom: 1px solid #aaa;
-}
-
-#header-cell input,
-#header-cell textarea {
-	background-color: #f4f4f4;
-	border: none;
-	font-family: inherit;
-	border: 1px solid #bbb;
-	resize: none;
-}
-
-#header-name {
-	grid-area: n;
-	text-align: center;
-	font-size: 30px;
-	height: 40px;
-}
-
-#header-partnera {
-	grid-area: a;
-}
-
-#header-partnerb {
-	grid-area: b;
-}
-
-#header-overview {
-	grid-area: d;
-	line-height: 1.2em;
-}
-
-
 /**************
 * Bidding Box *
 **************/
@@ -69,7 +23,7 @@
 }
 
 #bidding-box {
-	margin: 10px;
+	margin: 0px 10px;
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	border-style: solid;
@@ -86,6 +40,7 @@
 	text-align: center;
 	user-select: none;
 	height: 30px;
+	transition: 0.5s;
 }
 
 #bidding-box .bid:not(:diabled) {
@@ -141,6 +96,7 @@
 }
 
 #auction .bid {
+	padding-top: 5px;
 	border-style: inherit;
 	border-color: inherit;
 	border-width: 1px 1px 0px 0px;
@@ -163,42 +119,130 @@
 * Visualiser *
 *************/
 
-#treeview-cell {
+#content-cell {
 	grid-area: t;
 	border-left: 1px solid #aaa;
 	overflow: hidden;
 	position: relative;
+		margin-right: 10px;
+	border: 1px solid #aaa;
+	margin-bottom: 10px;
 }
 
 /* Mode bar */
-#treeview-mode {
+#content-mode {
+	display: flex;
+	flex-direction: row;
 	overflow: hidden;
 	font-size: 0px;
 }
 
-#treeview-mode .mode {
+#content-mode .mode {
 	font-size: 1rem;
 	display: inline-block;
 	background-color: #eee;
-	width: 50%;
+	flex: 1;
 	height: 30px;
 	line-height: 30px;
 	text-align: center;
 	text-transform: capitalize;
 	user-select: none;
 	cursor: pointer;
+	border-right: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
 }
 
-#treeview-mode .mode.active {
+#content-mode .mode:last-child {
+	border-right: none;
+}
+
+#content-mode .mode.active {
 	background-color: #ccc;
 }
 
-#treeview-mode .mode:hover {
+#content-mode .mode:hover {
 	background-color: #ddd;
 }
 
-/* Viewer */
-#treeview-main {
+/* Overview */
+
+#overview {
+	display: flex;
+	flex-direction: row;
+	background-color: white;
+	padding: 10px;
+	height: 100%;
+}
+
+#overview-titlecard {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+#overview-signals {
+	flex: 1;
+}
+
+#overview .field {
+	display: flex;
+	flex-direction: row;
+	padding: 5px;
+}
+
+#overview input,
+#overview textarea {
+	background-color: #f4f4f4;
+	border: none;
+	font-family: inherit;
+	border: 1px solid #bbb;
+	resize: none;
+	display: block;
+	width: 80%;
+}
+
+#overview textarea {
+	height: 100%;
+}
+
+#overview label {
+	text-align: right;
+	font-style: italic;
+	width: 20%;
+	padding-right: 20px;
+}
+
+.add {
+	border: 1px solid #aaa;
+	display: inline-block;
+	padding: 2px 10px;
+	border-radius: 2px;
+	background-color: #1b7132;
+	color: white;
+}
+
+.holding {
+	border: 1px solid #aaa;
+	display: inline-block;
+	padding: 2px;
+	border-radius: 2px;
+}
+
+.holding button {
+padding: 3px;
+border: none;
+outline: none;
+background-color: white;
+}
+
+.holding button.active {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+/* Treeview */
+
+#treeview {
 	text-align: left;
 	overflow-y: hidden;
 	overflow-x :scroll;
@@ -209,27 +253,27 @@
 	flex-direction: row;
 }
 
-#treeview-main .selectable:hover {
+#treeview .selectable:hover {
 	filter: invert(10%);
 	cursor: pointer;
 }
 
 /* Bid columns */
-#treeview-main .column {
+#treeview .column {
 	float: left;
 	height: 100%;
 	overflow-y: auto;
 }
 
-#treeview-main .column.conventions {
+#treeview .column.conventions {
 	background-color: #ddd;
 }
 
-#treeview-main .column.opps {
+#treeview .column.opps {
 	background-color: #eee;
 }
 
-#treeview-main .column.bid-pass {
+#treeview .column.bid-pass {
 	width: 20px;
 	writing-mode: tb-rl;
 	text-align: center;
@@ -238,13 +282,13 @@
 	height: 100%;
 }
 
-#treeview-main .column.bid.active {
+#treeview .column.bid.active {
 	border-top: 5px solid;
 	padding-top: 0px;
 }
 
 /* Individual bids */
-#treeview-main .column .bid:not(.bid-multi) {
+#treeview .column .bid:not(.bid-multi) {
 	display: block;
 	border: 1px solid;
 	border-radius: 3px;
@@ -254,25 +298,25 @@
 	padding-left: 4px;
 }
 
-#treeview-main .column .bid.bid-multi {
+#treeview .column .bid.bid-multi {
 	
 }
 
-#treeview-main .column .bid.active {
+#treeview .column .bid.active {
 	border-left: 5px solid;
 	padding-left: 0px;
 }
 
-#treeview-main .column .bid:last-child {
+#treeview .column .bid:last-child {
 	margin-bottom: 50px;
 }
 
 /* Conventions */
-#treeview-main .column.conventions {
+#treeview .column.conventions {
 	width: 200px;
 }
 
-#treeview-main .convention {
+#treeview .convention {
 	display: flex;
 	background-color: white;
 	border-bottom: 1px solid #ccc;
@@ -284,17 +328,17 @@
 }
 
 
-#treeview-main .convention .name {
+#treeview .convention .name {
 	background-color: #e6e6e6;
 	flex: 1;
 }
 
-	#treeview-main .convention.active .name {
-		font-weight: bold;
-	}
+#treeview .convention.active .name {
+	font-weight: bold;
+}
 
 
-#treeview-main .column.conventions li .bid {
+#treeview .column.conventions li .bid {
 	margin: 0;
 	border-radius: 0 !important;
 	border: none !important;
@@ -303,15 +347,15 @@
 
 /* Special Border Colours */
 
-#treeview-main .bid.bid-pass {
+#treeview .bid.bid-pass {
 	border-color: #203b05 !important;
 }
 
-#treeview-main .bid.bid-double {
+#treeview .bid.bid-double {
 	border-color: #690000 !important;
 }
 
-#treeview-main .bid.bid-redouble {
+#treeview .bid.bid-redouble {
 	border-color: #040438 !important;
 }
 
@@ -447,13 +491,13 @@ button#curbid-movedown {
 	cursor: default;
 }
 
-#treeview-cell .tooltip {
+#content-cell .tooltip {
 	margin-top: 8px;
 }
 
-#treeview-cell .bid-pass .tooltip,
-#treeview-cell .bid-double .tooltip,
-#treeview-cell .bid-redouble .tooltip {
+#content-cell .bid-pass .tooltip,
+#content-cell .bid-double .tooltip,
+#content-cell .bid-redouble .tooltip {
 	margin-top: 23px;
 }
 

@@ -1,6 +1,7 @@
 const Mode = Object.freeze({
-    Openings: 1,
-    Conventions: 2
+	Overview:		0x01,
+    Openings:		0x02,
+    Conventions:	0x04
 });
 
 class Auction {
@@ -8,7 +9,7 @@ class Auction {
         this.$parent = $("#auction");
         this.$first = this.$parent.children().slice(4, 5);
         this.bids = [];
-        this.mode = Mode.Openings;
+        this.mode = Mode.Overview;
         this.convention = null;
     }
 

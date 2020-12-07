@@ -136,8 +136,9 @@ class BiddingBox {
 
 
 	update() {
-		if (auction.mode === Mode.Conventions && auction.length === 0) {
+		if (auction.mode === Mode.Overview || (auction.mode === Mode.Conventions && auction.length === 0)) {
 			this.$bids.prop("disabled", true);
+			return;
 		}
 		// Set all bids to enabled by default    
 		this.$bids.prop("disabled", false);

@@ -32,7 +32,6 @@ class System {
 		this.conventions = obj.conventions;
 		
 		update();
-		updateHeader();
 	}
 
 	serialize() {

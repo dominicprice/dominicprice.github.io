@@ -1,42 +1,7 @@
-﻿// Load dependencies
-
-class ScriptLoader {
-	constructor(callback, ...scripts) {
-		this.remainingScripts = scripts.length;
-		this.callback = callback;
-
-		let head = document.getElementsByTagName("head")[0];
-		for (const script of scripts) {
-			let elem = document.createElement("script");
-			elem.src = script;
-			elem.onload = this.onLoad.bind(this);
-			head.appendChild(elem);
-		}
-	}
-
-	onLoad() {
-		--this.remainingScripts;
-		if (this.remainingScripts === 0)
-			this.callback();
-	}
-}
-
-let scriptLoader = new ScriptLoader(
-	initSystem,
-	"js/Auction.js",
-	"js/Bid.js",
-	"js/BiddingBox.js",
-	"js/InfoView.js",
-	"js/Menu.js",
-	"js/Modal.js",
-	"js/System.js",
-	"js/TreeView.js",
-);
-
-let auction = null
+﻿let auction = null
 let biddingBox = null;
 let system = null;
-let tree = null;
+let content = null;
 let info = null;
 let menu = null;
 
@@ -88,23 +53,10 @@ function correctOverflow(selector) {
 function update() {
 	auction.update();
 	biddingBox.update();
-	tree.update();
+	content.update();
 	info.update();
 	correctOverflow(".bid-custom");
 	//localStorage.setItem("system", system.serialize());
-}
-
-function updateHeader() {
-	$("#header-name").value = system.info.name;
-	$("#header-partnera").value = system.info.partnerA;
-	$("#header-partnerb").value = system.info.partnerB;
-	$("#header-overview").value = system.info.overview;	
-}
-
-function initialLoad(data) {
-	if (data)
-		system.load(data);
-	update();
 }
 
 function onAjaxError(a, b, c) {
@@ -120,10 +72,13 @@ function initSystem() {
 	system = new System();
 	auction = new Auction();
 	biddingBox = new BiddingBox();
-	tree = new TreeView();
+	content = new Content();
 	info = new InfoView();
 	menu = new Menu();
-	
+
+	// Initialise updates
+	update();
+
 	// Load system if provided
 	let sysName = findGetParameter("system");
 	if (sysName !== null) {

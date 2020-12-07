@@ -1,9 +1,20 @@
-class TreeView {
+class Content {
     constructor() {
-        this.$parent = $("#treeview");
-        this.$modeParent = $("#treeview-mode");
-        this.$mainParent = $("#treeview-main");
+        this.$modeParent = $("#content-mode");
+        this.$treeParent = $("#treeview");
+        this.$overviewParent = $("#overview");
 
+		$("#mode-overview").click((event) => {
+			let $target = $(event.target);
+			auction.mode = Mode.Overview;
+			auction.clear();
+			auction.convention = null;
+			this.$modeParent.children().removeClass("active");
+            $target.addClass("active");
+            this.$overviewParent.css("display", "flex");
+            this.$treeParent.css("display", "none");
+			update();
+		});
         $("#mode-openings").click((event) => {
             let $target = $(event.target)
             auction.mode = Mode.Openings;
@@ -11,6 +22,8 @@ class TreeView {
             auction.convention = null;
             this.$modeParent.children().removeClass("active");
             $target.addClass("active");
+            this.$overviewParent.css("display", "none");
+            this.$treeParent.css("display", "flex");
             update();
         });
         $("#mode-conventions").click((event) => {
@@ -20,6 +33,8 @@ class TreeView {
             auction.convention = null;
             this.$modeParent.children().removeClass("active");
             $target.addClass("active");
+            this.$overviewParent.css("display", "none");
+            this.$treeParent.css("display", "flex");
             update();
         });
 
@@ -104,7 +119,7 @@ class TreeView {
 
     addColumn() {
         let $col = $("<div>", { "class": "column" });
-        $col.appendTo(this.$mainParent);
+        $col.appendTo(this.$treeParent);
         return $col;
     }
 
@@ -181,13 +196,17 @@ class TreeView {
 	}
 
     update() {
-        this.$mainParent.empty();
-        if (auction.mode === Mode.Openings) {
+		if (auction.mode === Mode.Overview) {
+
+		}
+        else if (auction.mode === Mode.Openings) {
+            this.$treeParent.empty();
             let $col = this.addColumn();
             for (const bid of system.openings)
                 this.addBid(bid, $col, bid === auction.get(0));
         }
-        else {
+        else if (auction.mode === Mode.Conventions) {
+            this.$treeParent.empty();
             let $col = this.addColumn();
             $col.addClass("conventions");
             for (const convention in system.conventions) {

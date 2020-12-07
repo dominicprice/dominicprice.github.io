@@ -14,7 +14,7 @@ class Modal {
 
     open() {
         console.log("Opening!");
-        tree.unlistenKeyboardEvents();
+        content.unlistenKeyboardEvents();
         $("body").append(this.dom.$modal);
         $("input", this).focus();
         console.log(this.dom);
@@ -22,7 +22,7 @@ class Modal {
     }
 
     close(callback = function () { return null; }) {
-        tree.listenKeyboardEvents();
+        content.listenKeyboardEvents();
         this.dom.$modal.remove();
         this.dom = null;
         $("body").css("position", "")

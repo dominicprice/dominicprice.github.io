@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>HTML Editor</title>
+		
+		<!-- Stylesheets -->
+		<link href="https://fonts.googleapis.com/css?family=Baloo+Paaji+2&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="editor/editor.css">
+		<link rel="stylesheet" href="codemirror/lib/codemirror.css">
+		<link rel="stylesheet" href="codemirror/addon/dialog/dialog.css">
+		
+		<!-- Favicon -->
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+	</head>
+	
+	<body>
+		<!-- Menubar -->
+		<div class="menubar">
+			<div class="menuitem dropdown">
+				<label>File</label>
+				<div class="dropdown-content">
+					<label class="menuitem" id="file-new">New Tab<span class="shortcut">Ctrl+T</span></label>
+					<label class="menuitem" for="file-open">
+						<input class="hidden" type="file" multiple="false" id="file-open">
+						Open<span class="shortcut">Ctrl+O</span>
+					</label>
+					<label class="menuitem" id="file-download">Download</label>
+					<label class="menuitem" id="file-download-all">Download All</label>
+					<label class="menuitem" id="file-close">Close</label>				
+				</div>
+			</div>
+			<div class="menuitem dropdown">
+				<label>Edit</label>
+				<div class="dropdown-content">
+					<label class="menuitem" id="edit-undo">Undo<span class="shortcut">Ctrl+Z</span></label>
+					<label class="menuitem" id="edit-redo">Redo<span class="shortcut">Ctrl+Y</span></label>
+					<label class="menuitem" id="edit-selectall">Select All<span class="shortcut">Ctrl+A</span></label>
+					<label class="menuitem" id="edit-deleteline">Delete Line<span class="shortcut">Ctrl+D</span></label>
+					<label class="menuitem" id="edit-indent">Indent<span class="shortcut">Ctrl+]</span></label>
+					<label class="menuitem" id="edit-dedent">Dedent<span class="shortcut">Ctrl+[</span></label>
+					<label class="menuitem" id="edit-autoindent">Auto Indent<span class="shortcut">Shift+Tab</span></label>
+					<label class="menuitem" id="edit-closetag">Close Tag<span class="shortcut">Ctrl+.</span></label>
+				</div>
+			</div>
+			<div class="menuitem dropdown">
+				<label>Search</label>
+				<div class="dropdown-content">
+					<label class="menuitem" id="search-find">Find<span class="shortcut">Ctrl+F</span></label>
+					<label class="menuitem" id="search-findnext">Find Next<span class="shortcut">Ctrl+G</span></label>
+					<label class="menuitem" id="search-findprev">Find Previous<span class="shortcut">Ctrl+Shift+G</span></label>
+					<label class="menuitem" id="search-replace">Replace<span class="shortcut">Ctrl+Shift+F</span></label>
+					<label class="menuitem" id="search-replaceall">Replace All<span class="shortcut">Ctrl+Shift+R</span></label>
+					<label class="menuitem" id="search-jumptoline">Goto Line<span class="shortcut">Alt+G</span></label>
+					<label class="menuitem" id="search-tomatchingtag">Goto Matching Tag<span class="shortcut">Ctrl-J</span></label>
+				</div>
+			</div>
+			<div class="menuitem dropdown">
+				<label>View</label>
+				<div class="dropdown-content">
+					<div class="menuitem dropright">
+						<label>Select Theme <span class="shortcut">&gt;</span></label>
+						<div class="dropright-content" id="themes"></div>
+					</div>
+					<div class="menuitem">
+						Font Size (<span id="view-fontsize-display"></span>pt)
+						<button class="fas fa-chevron-up" id="view-fontsize-up"></button>
+						<button class="fas fa-chevron-down" id="view-fontsize-down"></button>
+					</div>
+
+					<label class="menuitem" for="view-linewrapping">
+						<input type="checkbox" id="view-linewrapping">
+						Line Wrapping
+					</label>
+					<label class="menuitem" for="view-linenumbers">
+						<input type="checkbox" id="view-linenumbers">
+						Line Numbers
+					</label>
+					<label class="menuitem" for="view-console">
+						<input type="checkbox" id="view-console">
+						Console
+					</label>
+				</div>
+			</div>
+			<div class="menuitem dropdown">
+				<label>Tab</label>
+				<div class="dropdown-content">
+					<label class="menuitem" id="tab-new">New Tab</label>
+					<label class="menuitem" id="tab-rename">Rename Tab</label>
+					<label class="menuitem" id="tab-move-left">Move Tab Left</label>
+					<label class="menuitem" id="tab-move-right">Move Tab Right</label>
+					<label class="menuitem" id="tab-close">Close Tab</label>
+				</div>
+			</div>
+			<div class="menuitem dropdown">
+				<label>Tools</label>
+				<div class="dropdown-content">
+					<label class="menuitem">
+						Choose Colour
+						<input class="hidden" type="color" id="tools-choose-colour"/>
+					</label>
+				</div>
+			</div>
+			<div class="menuitem dropdown">
+				<label>Options</label>
+				<div class="dropdown-content">
+					<label class="menuitem" id="options-indentunit">Indent Unit</label>
+					<label class="menuitem" id="options-tabsize">Tab Size</label>
+					<label class="menuitem" for="options-smartindent" >
+						<input type="checkbox" id="options-smartindent">
+						Smart Indent
+					</label>
+					<label class="menuitem" for="options-indentwithtabs">
+						<input type="checkbox" id="options-indentwithtabs">
+						Indent With Tabs
+					</label>
+					<label class="menuitem" for="options-autoclosetags">
+						<input type="checkbox" id="options-autoclosetags">
+						Auto Close Tags
+					</label>
+					<label class="menuitem" id="options-resettodefault">Reset to Default</label>
+				</div>
+			</div>
+			<label class="menuitem static" style="float: right">HTML Editor v0.0.1</label>
+		</div>
+
+		<!-- Main content -->
+		<div class="split">
+			<div class="box" id="editor-box">
+				<div class="tabbar" id="tabbar">
+					<div class="tab" id="new-tab"><button class="fas fa-plus"></button></div>
+				</div>
+				<textarea id="editor"></textarea>
+			</div>
+			<div class="box" id="preview-box">
+				<iframe id="preview"></iframe>
+				<div id="console"></div>
+			</div>
+		</div>
+		
+		<!-- Scripts -->
+		<script src="editor/jquery-3.5.1.min.js"></script>
+		<script src="https://kit.fontawesome.com/0c40e97570.js" crossorgin="anonymous" SameSite=None, Secure></script>
+		<script src="split_js/split.min.js"></script>
+		<script src="codemirror/lib/codemirror.js"></script>
+		<script src="codemirror/mode/css/css.js"></script>
+		<script src="codemirror/mode/xml/xml.js"></script>
+		<script src="codemirror/mode/javascript/javascript.js"></script>
+		<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="codemirror/addon/dialog/dialog.js"></script>
+		<script src="codemirror/addon/search/searchcursor.js"></script>
+		<script src="codemirror/addon/search/search.js"></script>
+		<script src="codemirror/addon/search/jump-to-line.js"></script>
+		<script src="codemirror/addon/fold/xml-fold.js"></script>
+		<script src="codemirror/addon/edit/matchtags.js"></script>
+		<script src="codemirror/addon/edit/closetag.js"></script>
+		<script src="jszip/jszip.js"></script>
+		<script src="editor/w3color.js"></script>
+		<script src="editor/editor.js"></script>
+		<script>
+			$(document).ready(initEditor);
+		</script>
+	</body>
+</html>
