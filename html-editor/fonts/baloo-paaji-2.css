@@ -1,0 +1,45 @@
+/* baloo-paaji-2-regular - latin-ext_latin */
+@font-face {
+  font-family: 'Baloo Paaji 2';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Baloo Paaji 2 Regular'), local('BalooPaaji2-Regular'),
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* baloo-paaji-2-600 - latin-ext_latin */
+@font-face {
+  font-family: 'Baloo Paaji 2';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Baloo Paaji 2 SemiBold'), local('BalooPaaji2-SemiBold'),
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* baloo-paaji-2-500 - latin-ext_latin */
+@font-face {
+  font-family: 'Baloo Paaji 2';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Baloo Paaji 2 Medium'), local('BalooPaaji2-Medium'),
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* baloo-paaji-2-700 - latin-ext_latin */
+@font-face {
+  font-family: 'Baloo Paaji 2';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Baloo Paaji 2 Bold'), local('BalooPaaji2-Bold'),
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* baloo-paaji-2-800 - latin-ext_latin */
+@font-face {
+  font-family: 'Baloo Paaji 2';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Baloo Paaji 2 ExtraBold'), local('BalooPaaji2-ExtraBold'),
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-800.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('baloo-paaji-2/baloo-paaji-2-v1-latin-ext_latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}

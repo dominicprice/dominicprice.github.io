@@ -1,0 +1,264 @@
+/**********************************
+* editor.css - HTML Editor        *
+* Distributed under MIT licence,  *
+* see licence file                *
+**********************************/
+
+
+/*******
+* Page *
+*******/
+html, body {
+	height: 100vh;
+}
+
+body {
+	overflow: hidden;
+	margin: 0;
+ }
+ 
+/* Menubar */
+.menubar {
+	overflow: hidden;
+	background-color: #333;
+	z-index: 0;
+}
+
+.menuitem {
+	font-family: "Baloo Paaji 2", sans-serif;
+	font-size: 14px;
+	color: white;
+	padding: 2px 16px;
+	margin: auto;
+	user-select: none;
+	float: left;
+	text-decoration: none;
+}
+
+.menuitem.active {
+	background-color: #222;
+}
+
+.menuitem:hover:not(.static) {
+	background-color: #111;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #333;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 10;
+	margin-top: 2px;
+	margin-left: -16px;
+	border-top: 1px solid #777;
+}
+
+.dropdown-content .menuitem {
+	float: none;
+	display: block;
+	text-align: left;
+	margin: 0;
+	border: none;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.dropright-content {
+	display: none;
+	position: absolute;
+	background-color: #333;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	margin-top: -27px;
+	margin-left: 124px;
+	overflow-y: scroll;
+	height: 300px;
+}
+
+.dropright-content .menuitem {
+	float: none;
+	display: block;
+	text-align: left;
+	margin: 0;
+	border: none;
+}
+
+.dropright:hover .dropright-content {
+	display: block;
+}
+
+.menuitem button {
+	border: none;
+	background-color: inherit;
+	color: #fff;
+	outline: none;
+	text-align: right;
+}
+
+.menuitem button:active {
+	color: #aaa;
+}
+
+.menuitem input[type=file] {
+	display: none;
+}
+
+/* Tab bar */
+.tabbar {
+	background-color: #444;
+	z-index: 0;
+	height: 35px;
+	display: flex;
+	flex-direction: row;
+	overflow-x: scroll;
+}
+
+.tab {
+	font-family: "Baloo Paaji 2", sans-serif;
+	font-size: 12px;
+	color: white;
+	padding: 2px 8px;
+	user-select: none;
+	white-space: nowrap;
+	text-decoration: none;
+}
+
+.tab.active {
+	background-color: #222;
+}
+
+.tab:hover {
+	background-color: #111;
+}
+
+.tab button {
+	border: none;
+	background-color: inherit;
+	color: #fff;
+	outline: none;
+	text-align: right;
+	padding: 0;
+	margin: 0px 5px 0px 5px;
+}
+
+.tab button:active {
+	color: #aaa;
+}
+
+/* Editor & preview windows */
+.split {
+	position: absolute;
+	top: 29px;
+	left: 0;
+	width: 100%;
+	height: calc(100% - 29px);
+	display: flex;
+	flex-direction: row;
+	z-index: 0;
+}
+
+.box {
+	width: 50%;
+	height: 100%;
+}
+
+.split, .gutter.gutter-horizontal{
+    float: left;
+}
+
+.gutter.gutter-horizontal {
+	z-index: 100;
+	background-color: #777;
+    cursor: ew-resize;
+}
+
+#page-title {
+	color: #ccc;
+}
+
+#preview-box {
+	display: flex;
+	flex-direction: column;
+}
+
+#preview {
+	width: 100%;
+	flex-grow: 1;
+	height: auto;
+	border: none;
+}
+
+#console {
+	width: 100%;
+	height: 20%;
+	background-color: #eee;
+	font-family: monospace;
+	overflow-y: scroll;
+	border-top: 2px solid #aaa;
+}
+
+.console-error {
+	margin: 5px;
+	color: red;
+}
+
+.tab .fas {
+	color: #777;
+}
+
+.tab .fas:hover {
+	color: #bbb;
+}
+
+.tab.preview .fa-paint-brush {
+	color: white;
+}
+
+
+/*************************
+* Custom scrollbars      *
+* (webkit browsers only) *
+*************************/
+
+/* width */
+#editor-box ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+/* Track */
+#editor-box ::-webkit-scrollbar-track {
+	background-color: #333; 
+}
+ 
+/* Handle */
+#editor-box ::-webkit-scrollbar-thumb {
+	background-color: black; 
+}
+
+/* Handle on hover */
+#editor-box ::-webkit-scrollbar-thumb:hover {
+	background-color: #555; 
+}
+
+#editor-box ::-webkit-scrollbar-corner {
+	background-color: black;
+}
+
+
+/**********************
+* Convenience classes *
+**********************/
+.hidden {
+	display: none;
+}
+
+.shortcut {
+	padding-left: 10px;
+	float: right;
+	color: #777;
+}
