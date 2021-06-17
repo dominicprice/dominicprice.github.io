@@ -67,3 +67,8 @@ function initQuotes() {
 	$("#quote").html(`“${quote.quote}” &mdash; ${quote.author}`);
 	setTimeout(initQuotes, changeTime);
 }
+
+$(document).ready(function () {
+	initLogo();
+	initQuotes();
+});
