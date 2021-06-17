@@ -95,10 +95,10 @@ function update() {
 }
 
 function updateHeader() {
-	$("#header-name").value = system.info.name;
-	$("#header-partnera").value = system.info.partnerA;
-	$("#header-partnerb").value = system.info.partnerB;
-	$("#header-overview").value = system.info.overview;	
+	$("#header-name").val(system.info.name);
+	$("#header-partnera").val(system.info.partnerA);
+	$("#header-partnerb").val(system.info.partnerB);
+	$("#header-overview").val(system.info.overview);
 }
 
 function initialLoad(data) {
