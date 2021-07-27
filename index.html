@@ -1,1 +1,171 @@
-<html><head><title>My github pages</title></head><body><img src="oblivion.jpg" style="width: 100%; height: 100%"></body></html>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dominic's GitHub Pages</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+			
+			body {
+				font-family: "Inconsolata", monospace;
+			}
+
+			.bg {
+				animation:slide 3s ease-in-out infinite alternate;
+				background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+				bottom:0;
+				left:-50%;
+				opacity:.5;
+				position:fixed;
+				right:-50%;
+				top:0;
+				z-index:-1;
+			}
+
+			.bg2 {
+				animation-direction:alternate-reverse;
+				animation-duration:4s;
+			}
+
+			.bg3 {
+				animation-duration:5s;
+			}
+
+			.content {
+				position: fixed;
+				min-width: 600px;
+				max-width: 800px;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				padding: 20px;
+				background-color: rgba(255,255,255,.8);
+				border-radius: 0.25em;
+				box-sizing: border-box;
+			}
+
+			.content h1 {
+				text-align: center;
+			}
+			
+			.content p {
+				font-size: 1.5rem;
+				line-height: 2rem;
+			}
+			
+			.content .footer {
+				text-align: right;
+				font-size: 0.75rem;
+			}
+
+			.boxes {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+			
+			.boxes a {
+				color: black;
+				text-decoration: none;
+			}
+			
+			.boxes a:visited {
+				color: black;
+			}
+			
+			.box {
+				width: 200px;
+				height: 200px;
+				margin: 20px;
+				border: 1px solid black;
+				padding: 10px;
+				border-radius: 0.25em;
+				background-color: white;
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+			}
+			
+			.box h2 {
+				margin: 0;
+			}
+			
+			.box p {
+				font-size: 1rem;
+				font-weight: bold;
+			}
+
+			@keyframes slide {
+				0% {
+					transform:translateX(-25%);
+				}
+				100% {
+					transform:translateX(25%);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="bg"></div>
+		<div class="bg bg2"></div>
+		<div class="bg bg3"></div>
+		<div class="content">
+			<h1>Welcome to my GitHub Pages</h1>
+			<p>
+				I host some of the web projects I have developed on github here; feel free to explore, use,
+				browse, break etc. anything on here.
+			</p>
+			<div class="boxes">
+				<a href="https://dominicprice.github.io/ntpass">
+					<div class="box" style="background: white url(ntpass.png)">
+						<h2>ntpass</h2>
+						<p>
+							Bridge system designer with support for range bids, conventions and custom
+							bid names
+						</p>
+					</div>
+				</a>
+
+				<a href="https://dominicprice.github.io/html-editor">
+					<div class="box" style="background: white url(html-editor.png)">
+						<h2>html-editor</h2>
+						<p>
+							Live-display editor for HTML, CSS and JS with tabbing and a smart 
+							CodeMirror powered code editor
+						</p>
+					</div>
+				</a>
+
+				<a href="https://dominicprice.github.io/crossword-tools">
+					<div class="box" style="background: white url(crossword-tools.png)">
+						<h2>crossword-tools</h2>
+						<p>
+							Set of tools for helping solve cryptic clues, powered by the DataMuse API
+						</p>
+					</div>
+				</a>
+			</div>
+			<div class="footer">
+			This cool background design by 
+			<a href="https://www.sliderrevolution.com/resources/css-animated-background/">Chris Smith</a>.<br>
+			<i>quomodo id faciat, fortasse requiris? nescio, sed CSS lego et excrucior.</i>
+			</div>
+		</div>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
