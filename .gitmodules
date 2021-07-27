@@ -1,3 +1,6 @@
 [submodule "crossword-tools"]
 	path = crossword-tools
 	url = https://github.com/dominicprice/crossword-tools
+[submodule "ntpass"]
+	path = ntpass
+	url = https://github.com/dominicprice/ntpass
