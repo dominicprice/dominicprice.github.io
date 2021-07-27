@@ -4,3 +4,6 @@
 [submodule "ntpass"]
 	path = ntpass
 	url = https://github.com/dominicprice/ntpass
+[submodule "html-editor"]
+	path = html-editor
+	url = https://github.com/dominicprice/html-editor
