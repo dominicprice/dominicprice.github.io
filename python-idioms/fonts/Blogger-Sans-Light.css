@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Blogger-Sans-Light';
+    src:url('Blogger-Sans-Light.ttf.woff') format('woff'),
+        url('Blogger-Sans-Light.ttf.svg#Blogger-Sans-Light') format('svg'),
+        url('Blogger-Sans-Light.ttf.eot'),
+        url('Blogger-Sans-Light.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+body { background-color: red; }

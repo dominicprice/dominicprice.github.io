@@ -1,0 +1,190 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	font-family: "Blogger-Sans-Light", sans-serif;	
+	display: flex;
+	flex-direction: column;
+	counter-reset: example;
+}
+
+header {
+	color: white;
+	background-color: #2b5b84;
+	flex: 0;
+}
+
+header h1 {
+	letter-spacing: 5px;
+}
+
+header h1 small {
+	font-size: 0.5em;
+	font-style: italic;
+	letter-spacing: 2px;
+}
+
+main {
+	padding: 50px;
+	color: black;
+	background-color: white;
+	flex: 1;
+}
+
+.mainbox {
+	margin: auto;
+	max-width: 1200px;
+	background-color: #f6f6f6;
+	padding: 10px 50px;
+}
+
+main .quote {
+	background-color: #ddd;
+	padding: 20px;
+	border-radius: 5px;
+	margin: 20px auto;
+	width: 80%;
+}
+
+main .quote .content {
+	font-style: italic;
+	font-size: 2em;
+	text-align: center;
+}
+
+main .quote .content:before {
+	text-align: left;
+	content: '“';
+	display: block;
+	font-size: 80px;
+	margin-bottom: -50px;
+	margin-left: -10px;
+}
+
+main .quote .content:after {
+	content: '”';
+	display: block;
+	font-size: 80px;
+	text-align: right;
+	margin-bottom: -40px;
+	margin-right: 20px;
+}
+
+main .quote .author {
+	text-align: right;
+}
+
+main .quote .author:before {
+	content: "—";
+}
+
+.example-counter {
+	display: inline-block;
+	position: sticky;
+	top: 0;
+	counter-increment: example;
+	position: sticky;
+	top: 10px;
+	margin-left: -50px;
+	margin-bottom: -50px;
+	padding: 0px 10px;
+	font-size: 40px;
+	background-color: #f6f6f6;
+	width: 25px;
+	overflow: hidden;
+	text-align: right;
+}
+
+.example-counter:before {
+	content: counter(example);
+}
+
+.example {
+	display: block;
+	border: 1px solid #ddd;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: #eee;
+}
+
+.example:not(:last-child) {
+	margin-bottom: 30px;
+}
+
+.example h2 {
+	margin: 0;
+	font-weight: normal;
+	font-size: 1.5em;
+	margin: 5px;
+}
+
+.codeblock {
+	font-family: monospace;
+	background: #303030;
+	color: #f1f1f1;
+	padding: 10px 16px;
+	border: 1px solid #aaa;
+	border-top: 4px solid #00aeef;
+	box-shadow: inset 0 0 10px #000;
+	counter-reset: line;
+	overflow-x: scroll;
+	border-radius: 3px;
+}
+
+.codeblock a:link, .codeblock a:visited, .codeblock a:hover, .codeblock a:active {
+	color: #888;
+	
+}
+
+.codeblock code {
+	white-space: pre;
+	display: block;
+	line-height: 1.2rem;
+}
+.codeblock code:before {
+	counter-increment: line;
+	content: counter(line);
+	display: inline-block;
+	width: 20px;
+	text-align: right;
+	padding: 0 .5em;
+	margin-right: .5em;
+	color: #888
+}
+
+.codeblock::-webkit-scrollbar{
+	width: 13px;
+height: 13px;
+}
+
+.codeblock::-webkit-scrollbar-thumb{
+	background: #B8B8B8;
+	border-radius: 0px;
+}
+
+.codeblock::-webkit-scrollbar-thumb:hover{
+	background: #ABABAB;
+}
+
+.codeblock::-webkit-scrollbar-track{
+	background: #303030;
+	border-radius: 0px;
+	box-shadow: inset 0px 0px 0px 0px #F0F0F0;
+}
+
+footer {
+	background-color: #e6e8ea;
+	padding: 5px;
+}
+
+footer h2 {
+	color: #3776ab;
+}
+
+h1 {
+	text-align: center;
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<title>Python Idioms for Beginners</title>
+		<link href="fonts/Blogger-Sans-Light.css" rel="stylesheet">
+		<link href="style.css" rel="stylesheet">
+	</head>
+	
+	<body>
+		<header>
+			<h1>
+				Python Idioms for Beginners <br>
+				<small>or &ldquo;If the developers write it, then it must be good&rdquo;</small>
+			</h1>
+		</header>
+		
+		<main>
+			<div class="mainbox">
+				<div class="quote">
+					<div class="content">
+						There should be one &mdash; and preferably only one &mdash; obvious way to do it.
+					</div>
+					<div class="author">
+						<a href="https://www.python.org/dev/peps/pep-0020/">PEP 20</a>, The Zen of Python, Line 13
+					</div>
+				</div>
+				<p>
+					An oft-quoted phrase, central to our understanding of what good and idiomatic Python code should 
+					be, this is often thrown around on forums, Q&amp;A sites, code reviews, instructions on Catholic 
+					liturgical practice before 1969, etc..
+				</p>
+				<p>
+					Unfortunately, far too often the next line of this almost sacred verse is omitted: 
+					<i>&ldquo;Although that way may not be obvious at first unless you're Dutch.&rdquo;</i>
+				</p>
+				<p>
+					It appears that many people on the internet do not know what this means: therefore, in order
+					to eliminate this confusion I have collected several examples of code fragments from within
+					the CPython source code which demonstrate exactly what obvious should mean; after all, surely
+					any code which doesn't conform to this standard would never make it into the codebase?
+				</p>
+				
+				<div class="example-counter"></div>
+				<div class="example">
+					<h2>How to check which operating system you're on</h2>
+					<div class="codeblock">
+						<a href="https://github.com/python/cpython/blob/03648a2a91f9f1091cd21bd4cd6ca092ddb25640/configure">/configure:39-72</a>
+						<br><br style="counter-set: line 38">
+						<code># Printing a long string crashes Solaris 7 /usr/bin/printf.</code>
+						<code>as_echo='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'</code>
+						<code>as_echo=$as_echo$as_echo$as_echo$as_echo$as_echo</code>
+						<code>as_echo=$as_echo$as_echo$as_echo$as_echo$as_echo$as_echo</code>
+						<code># Prefer a ksh shell builtin over an external printf program on Solaris,</code>
+						<code># but without wasting forks for bash or zsh.</code>
+						<code>if test -z "$BASH_VERSION$ZSH_VERSION" \</code>
+						<code>	&& (test "X`print -r -- $as_echo`" = "X$as_echo") 2>/dev/null; then</code>
+						<code>  as_echo='print -r --'</code>
+						<code>  as_echo_n='print -rn --'</code>
+						<code>elif (test "X`printf %s $as_echo`" = "X$as_echo") 2>/dev/null; then</code>
+						<code>  as_echo='printf %s\n'</code>
+						<code>  as_echo_n='printf %s'</code>
+						<code>else</code>
+						<code>  if test "X`(/usr/ucb/echo -n -n $as_echo) 2>/dev/null`" = "X-n $as_echo"; then</code>
+						<code>	as_echo_body='eval /usr/ucb/echo -n "$1$as_nl"'</code>
+						<code>	as_echo_n='/usr/ucb/echo -n'</code>
+						<code>  else</code>
+						<code>	as_echo_body='eval expr "X$1" : "X\\(.*\\)"'</code>
+						<code>	as_echo_n_body='eval</code>
+						<code>	  arg=$1;</code>
+						<code>	  case $arg in #(</code>
+						<code>	  *"$as_nl"*)</code>
+						<code>	expr "X$arg" : "X\\(.*\\)$as_nl";</code>
+						<code>	arg=`expr "X$arg" : ".*$as_nl\\(.*\\)"`;;</code>
+						<code>	  esac;</code>
+						<code>	  expr "X$arg" : "X\\(.*\\)" | tr -d "$as_nl"</code>
+						<code>	'</code>
+						<code>	export as_echo_n_body</code>
+						<code>	as_echo_n='sh -c $as_echo_n_body as_echo'</code>
+						<code>  fi</code>
+						<code>  export as_echo_body</code>
+						<code>  as_echo='sh -c $as_echo_body as_echo'</code>
+						<code>fi</code>
+					</div>
+				</div>
+				
+				<div class="example-counter"></div>
+				<div class="example">
+					<h2>Python's parser is as simple as its syntax</h2>
+					<div class="codeblock">
+						<a href="https://github.com/python/cpython/blob/7bf28cbb4bf37fa6bdfc2d3f8a3939066b3f8f22/Lib/codeop.py">/Lib/codeop.py:13-35</a>
+						<br><br style="counter-set: line 12">
+						<code>Approach:</code>
+						<code></code>
+						<code>First, check if the source consists entirely of blank lines and</code>
+						<code>comments; if so, replace it with 'pass', because the built-in</code>
+						<code>parser doesn't always do the right thing for these.</code>
+						<code></code>
+						<code>Compile three times: as is, with \n, and with \n\n appended.  If it</code>
+						<code>compiles as is, it's complete.  If it compiles with one \n appended,</code>
+						<code>we expect more.  If it doesn't compile either way, we compare the</code>
+						<code>error we get when compiling with \n or \n\n appended.  If the errors</code>
+						<code>are the same, the code is broken.  But if the errors are different, we</code>
+						<code>expect more.  Not intuitive; not even guaranteed to hold in future</code>
+						<code>releases; but this matches the compiler's behavior from Python 1.4</code>
+						<code>through 2.2, at least.</code>
+						<code></code>
+						<code>Caveat:</code>
+						<code></code>
+						<code>It is possible (but not likely) that the parser stops parsing with a</code>
+						<code>successful outcome before reaching the end of the source; in this</code>
+						<code>case, trailing symbols may be ignored instead of causing an error.</code>
+						<code>For example, a backslash followed by two newlines may be followed by</code>
+						<code>arbitrary garbage.  This will be fixed once the API for the parser is</code>
+						<code>better.</code>
+					</div>
+			</div>
+		</main>
+		
+		<footer>
+			Colour scheme shamelessly knocking off the Python website. Font used is 
+			<a href="https://webfonts.ffonts.net/Blogger-Sans-Light.font">Blogger Sans Light</a>.
+		</footer>
+	</body>
+</html>
