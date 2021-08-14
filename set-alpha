@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ "$#" != "1" ]]; then
+	echo "Usage: set-alpha FILE"
+	echo "Creates a backup at FILE.backup and sets the alpha channel of FILE to 0.5"
+	exit 1
+fi
+
+cp "$1" "$1.backup" && magick convert "$1.backup" -alpha set -background none -channel A -evaluate multiply 0.5 +channel "$1"
