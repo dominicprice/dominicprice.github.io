@@ -7,3 +7,6 @@
 [submodule "html-editor"]
 	path = html-editor
 	url = https://github.com/dominicprice/html-editor
+[submodule "latin-lexicon"]
+	path = latin-lexicon
+	url = https://github.com/dominicprice/latin-lexicon
