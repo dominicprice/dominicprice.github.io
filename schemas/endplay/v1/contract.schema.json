@@ -6,7 +6,9 @@
     "description": "Description of a contract and result",
     "properties": {
         "level": {
-            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/level.schema.json",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7,
             "description": "The level of the contract"
         },
         "denom": {
