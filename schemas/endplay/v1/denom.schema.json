@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://dominicprice.github.io/schemas/endplay/v1/denom.schema.json",
+    "title": "Denom",
+    "description": "A suit or notrumps",
+    "type": "string",
+    "enum": [
+        "spades",
+        "hearts",
+        "diamonds",
+        "clubs",
+        "nt"
+    ]
+}

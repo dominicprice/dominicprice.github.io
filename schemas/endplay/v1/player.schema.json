@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://dominicprice.github.io/schemas/endplay/v1/player.schema.json",
+    "title": "Player",
+    "description": "One of the compass directions representing a player",
+    "type": "string",
+    "enum": [
+        "north",
+        "east",
+        "south",
+        "west"
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://dominicprice.github.io/schemas/endplay/v1/penalty.schema.json",
+    "title": "Penalty",
+    "description": "A penalty applied to a contract",
+    "type": "string",
+    "enum": [
+        "pass",
+        "double",
+        "redouble"
+    ]
+}

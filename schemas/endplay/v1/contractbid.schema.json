@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://dominicprice.github.io/schemas/endplay/v1/contractbid.schema.json",
+    "title": "ContractBid",
+    "type": "object",
+    "description": "A bid of a suit or notrumps bid at a given level, e.g. 3NT",
+    "properties": {
+        "level": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/level.schema.json",
+            "description": "Level of the named bid"
+        },
+        "denom": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/denom.schema.json",
+            "description": "Strain of the named bid"
+        },
+        "alertable": {
+            "type": "boolean",
+            "description": "Denotes whether the bid is alertable",
+            "default": false
+        },
+        "announcement": {
+            "type": "string",
+            "description": "The spoken announcement made to describe the bid",
+            "default": ""
+        }
+    },
+    "required": ["level", "denom"]
+}

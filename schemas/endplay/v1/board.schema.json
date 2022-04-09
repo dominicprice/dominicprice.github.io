@@ -1,0 +1,112 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://dominicprice.github.io/schemas/endplay/v1/board.schema.json",
+    "title": "Board",
+    "type": "object",
+    "description": "Collection of information about a bridge board including the auction, play and details about the context it was played in",
+    "properties": {
+        "deal": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/deal.schema.json",
+            "description": "The hands of the four players"
+        },
+        "auction": {
+            "type": "array",
+            "items": {
+                "anyOf": [{
+                        "$ref": "https://dominicprice.github.io/schemas/endplay/v1/contractbid.schema.json"
+                    },
+                    {
+                        "$ref": "https://dominicprice.github.io/schemas/endplay/v1/penaltybid.schema.json"
+                    }
+                ]
+            },
+            "description": "The sequence of bids made at the auction in the order they were made"
+        },
+        "play": {
+            "type": "array",
+            "items": {
+                "$ref": "https://dominicprice.github.io/schemas/endplay/v1/card.schema.json"
+            },
+            "description": "The sequence of cards played a the table in the order they were played"
+        },
+        "board_num": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The board number, used to define dealer and vulnerability if not otherwise specified"
+        },
+        "vul": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/vul.schema.json",
+            "description": "The vulnerability of the board"
+        },
+        "dealer": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/player.schema.json",
+            "description": "The dealer of the board"
+        },
+        "contract": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/contract.schema.json",
+            "description": "The contract the board was played in"
+        },
+        "claimed": {
+            "type": "boolean",
+            "description": "Whether the play ended due to a claim"
+        },
+        "info": {
+            "type": "object",
+            "description": "Additional meta-information about the board in the form of arbitrary key-value pairs",
+            "patternProperties": {
+                "Table$": {
+                    "type": "object",
+                    "properties": {
+                        "headers": {
+                            "type": "array",
+                            "items": {
+                                "anyOf": [{
+                                        "type": "string",
+                                        "description": "The column name"
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "description": "The column name"
+                                            },
+                                            "ordering": {
+                                                "type": "string",
+                                                "enum": ["+", "-"],
+                                                "description": "Whether the table is ordered by this column in ascending (+) or descending (-) value"
+                                            },
+                                            "minwidth": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "description": "The minimum width that values in this column should be padded to"
+                                            },
+                                            "alignment": {
+                                                "type": "string",
+                                                "enum": ["L", "R"],
+                                                "description": "Whether the column should be left (L) or right (R) aligned. Ignored unless minwidth is defined"
+                                            }
+                                        },
+                                        "required": ["name"]
+                                    }
+                                ]
+                            }
+                        },
+                        "rows": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "description": "The rows of the table"
+                        }
+                    },
+                    "required": ["headers", "rows"]
+                }
+            },
+            "additionalProperties": {
+                "type": "string"
+            }
+        }
+    },
+    "required": ["deal", "auction", "play", "board_num"]
+}

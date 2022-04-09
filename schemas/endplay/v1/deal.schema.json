@@ -1,0 +1,57 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://dominicprice.github.io/schemas/endplay/v1/deal.schema.json",
+    "title": "Deal",
+    "type": "object",
+    "description": "The current state of play of a bridge deal",
+    "properties": {
+        "north": {
+            "description": "The cards held by the north player",
+            "type": "array",
+            "items": {
+                "$ref": "https://dominicprice.github.io/schemas/endplay/v1/card.schema.json"
+            }
+        },
+        "south": {
+            "description": "The cards held by the south player",
+            "type": "array",
+            "items": {
+                "$ref": "https://dominicprice.github.io/schemas/endplay/v1/card.schema.json"
+            }
+        },
+        "east": {
+            "description": "The cards held by the east player",
+            "type": "array",
+            "items": {
+                "$ref": "https://dominicprice.github.io/schemas/endplay/v1/card.schema.json"
+            }
+        },
+        "west": {
+            "description": "The cards held by the west player",
+            "type": "array",
+            "items": {
+                "$ref": "https://dominicprice.github.io/schemas/endplay/v1/card.schema.json"
+            }
+        },
+        "first": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/player.schema.json",
+            "description": "The first player to play to the current trick",
+            "default": "north"
+        },
+        "trump": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/denom.schema.json",
+            "description": "The trump suit the deal is being played in",
+            "default": "nt"
+        },
+        "curtrick": {
+            "description": "The cards played to the current trick",
+            "type": "array",
+            "items": {
+                "$ref": "https://dominicprice.github.io/schemas/endplay/v1/card.schema.json"
+            },
+            "maxItems": 3,
+            "default": []
+        }
+    },
+    "required": ["north", "south", "east", "west"]
+}

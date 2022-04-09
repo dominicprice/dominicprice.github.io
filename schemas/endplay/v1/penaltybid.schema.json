@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://dominicprice.github.io/schemas/endplay/v1/penaltybid.schema.json",
+    "title": "PenaltyBid",
+    "type": "object",
+    "description": "A bid of a pass, double or redouble",
+    "properties": {
+        "penalty": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/penalty.schema.json",
+            "description": "Penalty of the named bid"
+        },
+        "alertable": {
+            "type": "boolean",
+            "description": "Denotes whether the bid is alertable",
+            "default": false
+        },
+        "announcement": {
+            "type": "string",
+            "description": "The spoken announcement made to describe the bid",
+            "default": ""
+        }
+    },
+    "required": ["penalty"]
+}

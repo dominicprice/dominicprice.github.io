@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://dominicprice.github.io/schemas/endplay/v1/card.schema.json",
+    "title": "Card",
+    "type": "object",
+    "description": "A playing card",
+    "properties": {
+        "suit": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/denom.schema.json",
+            "description": "The suit of the card"
+        },
+        "rank": {
+            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/rank.schema.json",
+            "description": "The rank of the card"
+        }
+    },
+    "required": ["suit", "rank"]
+}
