@@ -6,7 +6,9 @@
     "description": "A bid of a suit or notrumps bid at a given level, e.g. 3NT",
     "properties": {
         "level": {
-            "$ref": "https://dominicprice.github.io/schemas/endplay/v1/level.schema.json",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7,
             "description": "Level of the named bid"
         },
         "denom": {
