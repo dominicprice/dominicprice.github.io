@@ -33,5 +33,6 @@
         }
 
     },
-    "required": ["level", "denom", "declarer"]
+    "required": ["level", "denom", "declarer"],
+    "additionalProperties": false
 }

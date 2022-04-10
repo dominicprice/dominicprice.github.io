@@ -53,5 +53,6 @@
             "default": []
         }
     },
-    "required": ["north", "south", "east", "west"]
+    "required": ["north", "south", "east", "west"],
+    "additionalProperties": false
 }

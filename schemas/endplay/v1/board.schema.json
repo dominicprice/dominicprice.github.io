@@ -108,5 +108,6 @@
             }
         }
     },
-    "required": ["deal", "auction", "play", "board_num"]
+    "required": ["deal", "auction", "play", "board_num"],
+    "additionalProperties": false
 }

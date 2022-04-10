@@ -20,5 +20,6 @@
             "default": ""
         }
     },
-    "required": ["penalty"]
+    "required": ["penalty"],
+    "additionalProperties": false
 }

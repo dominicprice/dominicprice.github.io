@@ -26,5 +26,6 @@
             "default": ""
         }
     },
-    "required": ["level", "denom"]
+    "required": ["level", "denom"],
+    "additionalProperties": false
 }

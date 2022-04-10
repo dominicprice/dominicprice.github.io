@@ -14,5 +14,6 @@
             "description": "The rank of the card"
         }
     },
-    "required": ["suit", "rank"]
+    "required": ["suit", "rank"],
+    "additionalProperties": false
 }
